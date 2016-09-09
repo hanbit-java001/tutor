@@ -1,4 +1,4 @@
-package com.hanbit.standalone;
+package com.hanbit.tutor.standalone;
 
 public class Hello {
 
