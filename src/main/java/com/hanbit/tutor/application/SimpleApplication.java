@@ -10,10 +10,10 @@ public class SimpleApplication {
 
 		ScheduleVO schedule = new ScheduleVO();
 		schedule.setScheduleId(String.valueOf(System.currentTimeMillis()));
-		schedule.setTitle("점심");
-		schedule.setMemo("메모");
-		schedule.setStartDt("201609131130");
-		schedule.setEndDt("201609131230");
+		schedule.setTitle("저녁");
+		schedule.setMemo("반찬 뭘까");
+		schedule.setStartDt("201609131830");
+		schedule.setEndDt("201609131930");
 
 		int result = schedulerService.addSchedule(schedule);
 
