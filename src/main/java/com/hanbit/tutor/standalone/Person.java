@@ -2,17 +2,13 @@ package com.hanbit.tutor.standalone;
 
 public class Person {
 
-	public static final String HOSPITAL = "병원";
-	public static final String HOME = "집";
-	public static final String SCHOOL = "학교";
-
 	private int age;
 	private String name;
-	private String location;
+	private Location location;
 
 	public Person() {
 		age = 1;
-		location = HOSPITAL;
+		location = new Location(Location.HOSPITAL, "서울 마포구");
 	}
 
 	public void liveYear() {
@@ -31,20 +27,26 @@ public class Person {
 		return name;
 	}
 
-	public String getLocation() {
+	public Location getLocation() {
 		return location;
 	}
 
-	private void go(String location) {
+	private void go(Location location) {
 		this.location = location;
 	}
 
 	public void goHome() {
-		go(HOME);
+		go(new Location(Location.HOME, "서울 강서구"));
 	}
 
 	public void goSchool() {
-		go(SCHOOL);
+		go(new Location(Location.SCHOOL, "서울 은평구"));
+	}
+
+	public String toString() {
+		String personString = "나이: " + getAge() + " 위치: " + getLocation();
+
+		return personString;
 	}
 
 }

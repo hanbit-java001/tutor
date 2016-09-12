@@ -4,18 +4,14 @@ public class Life {
 
 	public static void main(String[] args) {
 		Person someone = new Person();
-		Person anotherone = new Person();
 
 		for (int year = 0;year < 100; year++) {
-			if (Person.HOSPITAL.equals(someone.getLocation())
+			if (Location.HOSPITAL.equals( someone.getLocation().getName() )
 					&& someone.getAge() == 1) {
 				someone.goHome();
 			}
 
-			String personString = "나이: " + someone.getAge()
-				+ " 위치: " + someone.getLocation();
-
-			System.out.println(personString);
+			System.out.println(someone);
 
 			someone.liveYear();
 		}
