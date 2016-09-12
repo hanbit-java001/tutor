@@ -3,6 +3,8 @@ package com.hanbit.tutor.standalone;
 public class Life {
 
 	public static void main(String[] args) {
+		God god = God.pray();
+
 		Person someone = new Person();
 
 		for (int year = 0;year < 100; year++) {

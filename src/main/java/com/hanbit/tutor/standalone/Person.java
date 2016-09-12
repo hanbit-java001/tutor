@@ -6,9 +6,15 @@ public class Person {
 	private String name;
 	private Location location;
 
+	private Female female;
+
+	private class Female {
+
+	}
+
 	public Person() {
 		age = 1;
-		location = new Location(Location.HOSPITAL, "서울 마포구");
+		location = Location.LOC_HOSPITAL;
 	}
 
 	public void liveYear() {
@@ -36,11 +42,11 @@ public class Person {
 	}
 
 	public void goHome() {
-		go(new Location(Location.HOME, "서울 강서구"));
+		go(Location.LOC_HOME);
 	}
 
 	public void goSchool() {
-		go(new Location(Location.SCHOOL, "서울 은평구"));
+		go(Location.LOC_SCHOOL);
 	}
 
 	public String toString() {
