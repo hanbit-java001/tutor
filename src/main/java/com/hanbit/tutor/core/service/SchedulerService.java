@@ -16,7 +16,11 @@ public class SchedulerService {
 		String password = "hanbit";
 
 		String sql = "INSERT INTO SCHEDULE (SCHEDULE_ID, TITLE, MEMO, START_DT, END_DT) "
-				+ " VALUES('1', '학원가기', '공부하기', '20160912', '20160913')";
+				+ " VALUES('" + schedule.getScheduleId() + "', "
+				+ "'" + schedule.getTitle() + "', "
+				+ "'" + schedule.getMemo() + "', "
+				+ "'" + schedule.getStartDt() + "', "
+				+ "'" + schedule.getEndDt() + "')";
 
 		int result = 0;
 
