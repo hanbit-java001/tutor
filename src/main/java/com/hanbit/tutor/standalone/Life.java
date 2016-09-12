@@ -7,7 +7,7 @@ public class Life {
 
 		Person someone = new Person();
 
-		for (int year = 0;year < 100; year++) {
+		/*for (int year = 0;year < 100; year++) {
 			if (Location.HOSPITAL.equals( someone.getLocation().getName() )
 					&& someone.getAge() == 1) {
 				someone.goHome();
@@ -16,7 +16,7 @@ public class Life {
 			System.out.println(someone);
 
 			someone.liveYear();
-		}
+		}*/
 	}
 
 }
