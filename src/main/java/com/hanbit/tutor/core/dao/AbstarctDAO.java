@@ -5,18 +5,20 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.util.List;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 public abstract class AbstarctDAO {
 
-	protected Connection getConnection() {
-		String url = "jdbc:oracle:thin:@127.0.0.1/xe";
-		String user = "hanbit";
-		String password = "hanbit";
+	@Autowired
+	private DataSource dataSource;
 
+	protected Connection getConnection() {
 		Connection connection = null;
 
 		try {
-			Class.forName("oracle.jdbc.OracleDriver");
-			connection = DriverManager.getConnection(url, user, password);
+			connection = dataSource.getConnection();
 		}
 		catch (Exception e) {
 			e.printStackTrace();

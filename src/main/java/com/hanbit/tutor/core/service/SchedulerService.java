@@ -2,14 +2,25 @@ package com.hanbit.tutor.core.service;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.hanbit.tutor.core.dao.ScheduleDAO;
 import com.hanbit.tutor.core.vo.ScheduleVO;
 
+@Service
 public class SchedulerService {
 
-	private ScheduleDAO scheduleDAO = new ScheduleDAO();
+	private static final Logger LOGGER = LoggerFactory.getLogger(SchedulerService.class);
+
+	@Autowired
+	private ScheduleDAO scheduleDAO;
 
 	public int addSchedule(ScheduleVO schedule) {
+		LOGGER.debug("스케줄 추가");
+
 		return scheduleDAO.insertSchedule(schedule);
 	}
 
