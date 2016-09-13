@@ -7,20 +7,18 @@ import com.hanbit.tutor.core.vo.ScheduleVO;
 
 public class SchedulerService {
 
-	public int addSchedule(ScheduleVO schedule) {
-		ScheduleDAO scheduleDAO = new ScheduleDAO();
+	private ScheduleDAO scheduleDAO = new ScheduleDAO();
 
+	public int addSchedule(ScheduleVO schedule) {
 		return scheduleDAO.insertSchedule(schedule);
 	}
 
 	public int modifySchedule(ScheduleVO schedule) {
-
-		return 0;
+		return scheduleDAO.updateSchedule(schedule);
 	}
 
 	public int removeSchedule(String scheduleId) {
-
-		return 0;
+		return scheduleDAO.deleteSchedule(scheduleId);
 	}
 
 	public List<ScheduleVO> listSchedules(String startDt, String endDt) {

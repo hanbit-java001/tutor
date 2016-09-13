@@ -97,4 +97,9 @@ public class ScheduleDAO {
 		return result;
 	}
 
+	public int deleteSchedule(String scheduleId) {
+
+		return 0;
+	}
+
 }
