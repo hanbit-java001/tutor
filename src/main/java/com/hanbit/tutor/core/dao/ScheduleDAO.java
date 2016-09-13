@@ -98,8 +98,18 @@ public class ScheduleDAO {
 	}
 
 	public int deleteSchedule(String scheduleId) {
+		Connection connection = getConnection();
 
-		return 0;
+		String sql = "DELETE FROM SCHEDULE WHERE SCHEDULE_ID = ?";
+
+		List params = new ArrayList();
+		params.add(scheduleId);
+
+		int result = executeSql(connection, sql, params);
+
+		closeConnection(connection);
+
+		return result;
 	}
 
 }
