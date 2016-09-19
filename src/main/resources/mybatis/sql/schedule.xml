@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="schedule">
+
+	<insert id="insertSchedule" parameterType="com.hanbit.tutor.core.vo.ScheduleVO">
+		INSERT INTO SCHEDULE
+			(SCHEDULE_ID, TITLE, MEMO, START_DT, END_DT)
+		VALUES
+			(#{scheduleId}, #{title}, #{memo}, #{startDt}, #{endDt})
+	</insert>
+
+	<update id="updateSchedule" parameterType="com.hanbit.tutor.core.vo.ScheduleVO">
+		UPDATE SCHEDULE SET
+			TITLE = #{title}, MEMO = #{memo},
+			START_DT = #{startDt}, END_DT = #{endDt}
+		WHERE SCHEDULE_ID = #{scheduleId}
+	</update>
+
+</mapper>
