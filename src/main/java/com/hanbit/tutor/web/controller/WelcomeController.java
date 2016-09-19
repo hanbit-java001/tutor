@@ -12,7 +12,7 @@ public class WelcomeController {
 
 		model.addAttribute("name", "Hanbit");
 
-		return "/WEB-INF/jsp/welcome.jsp";
+		return "welcome";
 	}
 
 }
