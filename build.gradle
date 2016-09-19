@@ -29,6 +29,7 @@ dependencies {
 
 	compile group: 'org.springframework', name: 'spring-context', version: '4.3.2.RELEASE'
 	compile group: 'org.springframework', name: 'spring-jdbc', version: '4.3.2.RELEASE'
+	compile group: 'org.springframework', name: 'spring-webmvc', version: '4.3.2.RELEASE'
 
 	compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.21'
 	compile group: 'org.slf4j', name: 'jcl-over-slf4j', version: '1.7.21'
