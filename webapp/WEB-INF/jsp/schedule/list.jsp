@@ -5,7 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>스케줄러</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="/static/plugins/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="/static/plugins/font-awesome/css/font-awesome.min.css">
 <style type="text/css">
 #txtYearMonth {
@@ -70,11 +70,10 @@
 			<button class="btn btn-success">일정추가</button>
 		</div>
 	</div>
-<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="/static/plugins/jquery/jquery-3.1.0.min.js"></script>
+<script src="/static/plugins/bootstrap/js/bootstrap.min.js"></script>
 <script src="/static/plugins/momentjs/moment.min.js"></script>
 <script type="text/javascript">
-
 var current = moment();
 
 function makeCalendar(year, month) {
@@ -136,7 +135,6 @@ $("#btnNextMonth").on("click", function() {
 
 	makeCalendar(prev.get("year"), prev.get("month") + 1);
 });
-
 </script>
 </body>
 </html>
