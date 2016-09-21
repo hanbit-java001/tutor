@@ -26,6 +26,7 @@
 	height: 48px;
 	color: white;
 	text-align: center;
+	cursor: pointer;
 }
 .hanbit-top-button.right {
 	display: inline-block;
@@ -89,14 +90,22 @@ $(document).ready(function() {
     	height: "auto",
 
     	header: {
-    	    left:   '',
-    	    center: 'title',
-    	    right:  'prevYear,prev,today,next,nextYear'
+    	    left:   "",
+    	    center: "title",
+    	    right:  ""
     	},
 
     	dayClick: function(date) {
     		alert(date.format('MMMM Do YYYY, h:mm:ss a'));
         }
+    });
+
+    $("#btnPrevMonth").on("click", function() {
+    	$('#calendar').fullCalendar("prev");
+    });
+
+    $("#btnNextMonth").on("click", function() {
+    	$('#calendar').fullCalendar("next");
     });
 
     jQuery.ajax({
