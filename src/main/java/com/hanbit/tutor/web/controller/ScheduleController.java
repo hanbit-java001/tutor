@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hanbit.tutor.core.service.SchedulerService;
@@ -30,10 +31,8 @@ public class ScheduleController {
 
 	@RequestMapping("/api/schedule/list")
 	@ResponseBody
-	public List<ScheduleVO> listSchedules(HttpServletRequest request) {
-
-		String startDt = request.getParameter("startDt");
-		String endDt = request.getParameter("endDt");
+	public List<ScheduleVO> listSchedules(@RequestParam("startDt") String startDt,
+			@RequestParam("endDt") String endDt) {
 
 		List<ScheduleVO> result = schedulerService.listSchedules(startDt, endDt);
 
