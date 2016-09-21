@@ -21,14 +21,23 @@
 }
 
 .hanbit-top-button {
-	position: absolute;
+	position: relative;
 	width: 48px;
 	height: 48px;
 	color: white;
 	text-align: center;
 }
-
 .hanbit-top-button.right {
+	display: inline-block;
+	right: 0px;
+}
+.hanbit-top-button.arrow {
+	width: 32px;
+}
+
+#btnGroupRight {
+	position: absolute;
+	top: 0px;
 	right: 0px;
 }
 
@@ -50,8 +59,16 @@
 		<div id="btnMenu" class="hanbit-top-button">
 			<i class="material-icons hanbit-abs-center">menu</i>
 		</div>
-		<div id="btnAddSchedule" class="hanbit-top-button right">
-			<i class="material-icons hanbit-abs-center">add</i>
+		<div id="btnGroupRight">
+			<div id="btnPrevMonth" class="hanbit-top-button right arrow">
+				<i class="material-icons hanbit-abs-center">keyboard_arrow_left</i>
+			</div>
+			<div id="btnNextMonth" class="hanbit-top-button right arrow">
+				<i class="material-icons hanbit-abs-center">keyboard_arrow_right</i>
+			</div>
+			<div id="btnAddSchedule" class="hanbit-top-button right">
+				<i class="material-icons hanbit-abs-center">add</i>
+			</div>
 		</div>
 	</header>
 
