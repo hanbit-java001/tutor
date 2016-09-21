@@ -25,7 +25,7 @@
 	<![CDATA[
 		SELECT SCHEDULE_ID, TITLE, MEMO, START_DT, END_DT
 		FROM SCHEDULE
-		WHERE START_DT <= #{startDt} AND END_DT >= #{endDt}
+		WHERE START_DT <= #{endDt} AND END_DT >= #{startDt}
 		ORDER BY START_DT
 	]]>
 	</select>
