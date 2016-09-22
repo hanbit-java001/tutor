@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -38,4 +39,14 @@ public class ScheduleController {
 
 		return result;
 	}
+
+	@RequestMapping("/api/schedule/add")
+	@ResponseBody
+	public ScheduleVO addSchedule(@RequestBody ScheduleVO schedule) {
+
+		LOGGER.debug(schedule.getTitle());
+
+		return schedule;
+	}
+
 }

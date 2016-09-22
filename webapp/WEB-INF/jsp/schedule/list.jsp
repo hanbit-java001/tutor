@@ -96,6 +96,7 @@
 					<i class="material-icons hanbit-abs-center">add</i>
 				</div>
 			</div>
+
 			<div id="btnGroupAddSchedule">
 				<div id="btnApplyAddSchedule" class="hanbit-top-button right">
 					<i class="material-icons hanbit-abs-center">done</i>
@@ -109,6 +110,7 @@
 
 	<div class="hanbit-container">
 		<div id="calendar"></div>
+
 		<div id="divAddSchedule">
 			<div class="form-group">
     			<label for="txtTitle">제목</label>
@@ -153,13 +155,24 @@ $(document).ready(function() {
         }
     });
 
+    $('#txtStartDt').datetimepicker({
+    	locale: "ko",
+    	format: "YYYY-MM-DD a hh:mm",
+    	stepping: 15
+    });
+    $('#txtEndDt').datetimepicker({
+    	locale: "ko",
+    	format: "YYYY-MM-DD a hh:mm",
+    	stepping: 15
+    });
+
+    var rangeFormat = "YYYYMMDDHHmm";
     var currentMoment = moment();
 
     var range = {
-       	start: currentMoment.startOf("month").format("YYYYMMDDHHmm"),
-       	end: currentMoment.endOf("month").format("YYYYMMDDHHmm")
+       	start: currentMoment.startOf("month").format(rangeFormat),
+       	end: currentMoment.endOf("month").format(rangeFormat)
     };
-
 
     $("#btnPrevMonth").on("click", function() {
     	showPrevMonth();
@@ -175,6 +188,60 @@ $(document).ready(function() {
 
 		$("#calendar").hide();
 		$("#divAddSchedule").show();
+
+		$("#txtStartDt").data("DateTimePicker").date(moment());
+		$("#txtEndDt").data("DateTimePicker").date(moment().add(1, "hour"));
+    });
+
+    $("#btnApplyAddSchedule").on("click", function() {
+		var title = $("#txtTitle").val();
+		var startDt = $("#txtStartDt").val();
+		var endDt = $("#txtEndDt").val();
+		var memo = $("#txtMemo").val();
+
+		if (title.trim() == "") {
+			alert("제목을 입력하세요.");
+			$("#txtTitle").val("");
+			$("#txtTitle").focus();
+			return;
+		}
+		else if (startDt.trim() == "") {
+			alert("시작일시를 입력하세요.");
+			$("#txtStartDt").val("");
+			$("#txtStartDt").focus();
+			return;
+		}
+		else if (endDt.trim() == "") {
+			alert("종료일시를 입력하세요.");
+			$("#txtEndDt").val("");
+			$("#txtEndDt").focus();
+			return;
+		}
+
+		startDt = $("#txtStartDt").data("DateTimePicker").date();
+		endDt = $("#txtEndDt").data("DateTimePicker").date();
+
+		if (startDt.isAfter(endDt)) {
+			alert("시작일시는 종료일시보다 이전 일시여야 합니다.");
+			return;
+		}
+
+    	var schedule = {
+			title: title,
+			startDt: startDt.format(rangeFormat),
+			endDt: endDt.format(rangeFormat),
+			memo: memo
+		};
+
+		$.ajax({
+			url: "/api/schedule/add",
+			method: "POST",
+			contentType: "application/json; charset=utf-8",
+			dataType: "json",
+			data: JSON.stringify(schedule)
+		}).done(function(result) {
+
+		});
     });
 
     $("#btnCancelAddSchedule").on("click", function() {
@@ -184,11 +251,6 @@ $(document).ready(function() {
 		$("#divAddSchedule").hide();
 		$("#calendar").show();
     });
-
-    $('#txtStartDt').datetimepicker();
-    $('#txtEndDt').datetimepicker();
-
-    var rangeFormat = "YYYYMMDDHHmm";
 
     function showPrevMonth() {
     	$('#calendar').fullCalendar("prev");
