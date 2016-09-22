@@ -44,7 +44,14 @@ public class ScheduleController {
 	@ResponseBody
 	public ScheduleVO addSchedule(@RequestBody ScheduleVO schedule) {
 
-		LOGGER.debug(schedule.getTitle());
+		String scheduleId = schedulerService.generateId();
+		schedule.setScheduleId(scheduleId);
+
+		int countAdded = schedulerService.addSchedule(schedule);
+
+		if (countAdded == 0) {
+			throw new RuntimeException();
+		}
 
 		return schedule;
 	}

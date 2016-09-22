@@ -63,6 +63,10 @@
 	position: relative;
 }
 
+#divAddSchedule .form-control[readonly] {
+	background-color: white;
+}
+
 .hanbit-schedule-detail {
 	width: 100%;
 }
@@ -126,7 +130,7 @@
 			</div>
 			<div class="form-group">
     			<label for="txtMemo">메모</label>
-    			<textarea class="form-control" id="txtMemo" placeholder="메모"></textarea>
+    			<textarea class="form-control" id="txtMemo" placeholder="메모" rows="3"></textarea>
 			</div>
 		</div>
 	</div>
@@ -158,13 +162,23 @@ $(document).ready(function() {
     $('#txtStartDt').datetimepicker({
     	locale: "ko",
     	format: "YYYY-MM-DD a hh:mm",
-    	stepping: 15
+    	stepping: 15,
+    	ignoreReadonly: true,
+    	showClose: true
     });
+
     $('#txtEndDt').datetimepicker({
     	locale: "ko",
     	format: "YYYY-MM-DD a hh:mm",
-    	stepping: 15
+    	stepping: 15,
+    	ignoreReadonly: true,
+    	showClose: true
     });
+
+	if (navigator.userAgent.indexOf("Mobile") > -1) {
+		$("#txtStartDt").attr("readonly", "readonly");
+		$("#txtEndDt").attr("readonly", "readonly");
+	}
 
     var rangeFormat = "YYYYMMDDHHmm";
     var currentMoment = moment();
@@ -189,8 +203,10 @@ $(document).ready(function() {
 		$("#calendar").hide();
 		$("#divAddSchedule").show();
 
+		$("#txtTitle").val("");
 		$("#txtStartDt").data("DateTimePicker").date(moment());
 		$("#txtEndDt").data("DateTimePicker").date(moment().add(1, "hour"));
+		$("#txtMemo").val("");
     });
 
     $("#btnApplyAddSchedule").on("click", function() {
@@ -240,9 +256,27 @@ $(document).ready(function() {
 			dataType: "json",
 			data: JSON.stringify(schedule)
 		}).done(function(result) {
+			$("#btnGroupAddSchedule").hide();
+			$("#btnGroupCalendar").show();
 
+			$("#divAddSchedule").hide();
+			$("#calendar").show();
+
+			addSchedule(result);
+		}).fail(function() {
+			alert("사용자가 폭주하여 잠시 후 사용해주세요.");
 		});
     });
+
+    function addSchedule(originEvent) {
+		  var event = {};
+
+		  event.title = originEvent.title;
+		  event.start = moment(originEvent.startDt, rangeFormat).format("YYYY-MM-DDTHH:mm");
+		  event.end = moment(originEvent.endDt, rangeFormat).format("YYYY-MM-DDTHH:mm");
+
+		  $("#calendar").fullCalendar("renderEvent", event);
+    }
 
     $("#btnCancelAddSchedule").on("click", function() {
 		$("#btnGroupAddSchedule").hide();
@@ -253,7 +287,7 @@ $(document).ready(function() {
     });
 
     function showPrevMonth() {
-    	$('#calendar').fullCalendar("prev");
+    	$("#calendar").fullCalendar("prev");
 
     	currentMoment = currentMoment.subtract(1, "month");
 
@@ -261,7 +295,7 @@ $(document).ready(function() {
     }
 
     function showNextMonth() {
-    	$('#calendar').fullCalendar("next");
+    	$("#calendar").fullCalendar("next");
 
     	currentMoment = currentMoment.add(1, "month");
 
@@ -285,13 +319,7 @@ $(document).ready(function() {
 	    	}
 	    }).done(function(result) {
 	    	  for (var i=0;i<result.length;i++) {
-	    		  var event = {};
-
-	    		  event.title = result[i].title;
-	    		  event.start = moment(result[i].startDt, rangeFormat).format("YYYY-MM-DDTHH:mm");
-	    		  event.end = moment(result[i].endDt, rangeFormat).format("YYYY-MM-DDTHH:mm");
-
-	    		  $('#calendar').fullCalendar("renderEvent", event);
+	    		  addSchedule(result[i]);
 	    	  }
 	    }).fail(function() {
 			alert("사용자가 폭주하여 잠시 후 사용해주세요.");

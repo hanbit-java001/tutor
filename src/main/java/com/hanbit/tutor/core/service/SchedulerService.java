@@ -2,6 +2,7 @@ package com.hanbit.tutor.core.service;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,16 @@ public class SchedulerService {
 
 	public ScheduleVO getSchedule(String scheduleId) {
 		return scheduleDAO.selectSchedule(scheduleId);
+	}
+
+	public String generateId() {
+		String time = String.valueOf(System.currentTimeMillis());
+		String threadId = String.valueOf(Thread.currentThread().getId());
+		threadId = StringUtils.leftPad(threadId, 4, "0");
+
+		String uniqueId = time + threadId;
+
+		return uniqueId;
 	}
 
 }
