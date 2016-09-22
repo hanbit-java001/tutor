@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="/static/plugins/font-awesome/css/font-awesome.min.css">
 <link rel="stylesheet" href="/static/plugins/material/iconfont/material-icons.css">
 <link rel="stylesheet" href="/static/plugins/fullcalendar/fullcalendar.min.css" />
+<link rel="stylesheet" href="/static/plugins/datetimepicker/css/bootstrap-datetimepicker.min.css" />
 <style type="text/css">
 .hanbit-header {
 	position: fixed;
@@ -52,6 +53,29 @@
 .hanbit-container {
 	padding: 58px 10px 10px 10px;
 }
+
+#btnGroupAddSchedule {
+	display: none;
+}
+
+#divAddSchedule {
+	display: none;
+	position: relative;
+}
+
+.hanbit-schedule-detail {
+	width: 100%;
+}
+
+.hanbit-schedule-detail .column-title {
+	width: 20%;
+	min-width: 80px;
+	max-width: 150px;
+}
+
+.hanbit-schedule-detail .column-value {
+	width: 80%;
+}
 </style>
 </head>
 <body>
@@ -61,26 +85,55 @@
 			<i class="material-icons hanbit-abs-center">menu</i>
 		</div>
 		<div id="btnGroupRight">
-			<div id="btnPrevMonth" class="hanbit-top-button right arrow">
-				<i class="material-icons hanbit-abs-center">keyboard_arrow_left</i>
+			<div id="btnGroupCalendar">
+				<div id="btnPrevMonth" class="hanbit-top-button right arrow">
+					<i class="material-icons hanbit-abs-center">keyboard_arrow_left</i>
+				</div>
+				<div id="btnNextMonth" class="hanbit-top-button right arrow">
+					<i class="material-icons hanbit-abs-center">keyboard_arrow_right</i>
+				</div>
+				<div id="btnAddSchedule" class="hanbit-top-button right">
+					<i class="material-icons hanbit-abs-center">add</i>
+				</div>
 			</div>
-			<div id="btnNextMonth" class="hanbit-top-button right arrow">
-				<i class="material-icons hanbit-abs-center">keyboard_arrow_right</i>
-			</div>
-			<div id="btnAddSchedule" class="hanbit-top-button right">
-				<i class="material-icons hanbit-abs-center">add</i>
+			<div id="btnGroupAddSchedule">
+				<div id="btnApplyAddSchedule" class="hanbit-top-button right">
+					<i class="material-icons hanbit-abs-center">done</i>
+				</div>
+				<div id="btnCancelAddSchedule" class="hanbit-top-button right">
+					<i class="material-icons hanbit-abs-center">clear</i>
+				</div>
 			</div>
 		</div>
 	</header>
 
 	<div class="hanbit-container">
 		<div id="calendar"></div>
+		<div id="divAddSchedule">
+			<div class="form-group">
+    			<label for="txtTitle">제목</label>
+    			<input type="text" class="form-control" id="txtTitle" placeholder="제목">
+			</div>
+			<div class="form-group">
+    			<label for="txtStartDt">시작</label>
+    			<input type="text" class="form-control" id="txtStartDt" placeholder="시작">
+			</div>
+			<div class="form-group">
+    			<label for="txtEndDt">종료</label>
+    			<input type="text" class="form-control" id="txtEndDt" placeholder="종료">
+			</div>
+			<div class="form-group">
+    			<label for="txtMemo">메모</label>
+    			<textarea class="form-control" id="txtMemo" placeholder="메모"></textarea>
+			</div>
+		</div>
 	</div>
 
 <script src="/static/plugins/jquery/jquery-3.1.0.min.js"></script>
 <script src="/static/plugins/bootstrap/js/bootstrap.min.js"></script>
 <script src="/static/plugins/momentjs/moment.min.js"></script>
 <script src="/static/plugins/fullcalendar/fullcalendar.min.js"></script>
+<script src="/static/plugins/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 <script src="/static/plugins/fullcalendar/locale/ko.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
@@ -116,6 +169,25 @@ $(document).ready(function() {
     	showNextMonth();
     });
 
+    $("#btnAddSchedule").on("click", function() {
+		$("#btnGroupCalendar").hide();
+		$("#btnGroupAddSchedule").show();
+
+		$("#calendar").hide();
+		$("#divAddSchedule").show();
+    });
+
+    $("#btnCancelAddSchedule").on("click", function() {
+		$("#btnGroupAddSchedule").hide();
+		$("#btnGroupCalendar").show();
+
+		$("#divAddSchedule").hide();
+		$("#calendar").show();
+    });
+
+    $('#txtStartDt').datetimepicker();
+    $('#txtEndDt').datetimepicker();
+
     var rangeFormat = "YYYYMMDDHHmm";
 
     function showPrevMonth() {
@@ -149,13 +221,13 @@ $(document).ready(function() {
 	    		startDt: startDt,
 	    		endDt: endDt
 	    	}
-	    }).done(function(data) {
-	    	  for (var i=0;i<data.length;i++) {
+	    }).done(function(result) {
+	    	  for (var i=0;i<result.length;i++) {
 	    		  var event = {};
 
-	    		  event.title = data[i].title;
-	    		  event.start = moment(data[i].startDt, rangeFormat).format("YYYY-MM-DDTHH:mm");
-	    		  event.end = moment(data[i].endDt, rangeFormat).format("YYYY-MM-DDTHH:mm");
+	    		  event.title = result[i].title;
+	    		  event.start = moment(result[i].startDt, rangeFormat).format("YYYY-MM-DDTHH:mm");
+	    		  event.end = moment(result[i].endDt, rangeFormat).format("YYYY-MM-DDTHH:mm");
 
 	    		  $('#calendar').fullCalendar("renderEvent", event);
 	    	  }
