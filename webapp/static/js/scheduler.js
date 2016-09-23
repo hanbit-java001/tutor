@@ -14,6 +14,29 @@ $(document).ready(function() {
 
     	dayClick: function(date) {
     		handleDayClick(date);
+        },
+
+        eventAfterAllRender: function(view) {
+        	if (view.type == "listDay") {
+    			var deleteButton = "<button class='delete-schedule btn btn-danger'>삭제</button>";
+
+    			$(".fc-list-item-title").append(deleteButton);
+        	}
+        },
+
+        eventClick: function(calEvent, jsEvent, view) {
+        	var jqTarget = $(jsEvent.target);
+
+        	if (jqTarget.hasClass("delete-schedule")) {
+        		$.ajax({
+        			url: "/api/schedule/" + calEvent.id,
+        			method: "DELETE"
+        		}).done(function(result) {
+        			if (result.countRemove > 0) {
+        				$("#calendar").fullCalendar("removeEvents", calEvent.id);
+        			}
+        		});
+        	}
         }
     });
 
@@ -93,12 +116,6 @@ $(document).ready(function() {
 		}
 
     	$("#calendar").fullCalendar("changeView", viewName);
-
-		if (viewName == "listDay") {
-			var deleteButton = "<button class='delete-schedule btn btn-danger'>삭제</button>";
-
-			$(".fc-list-item-title").append(deleteButton);
-		}
     }
 
     function showAddSchedule(date) {
@@ -186,6 +203,7 @@ $(document).ready(function() {
     function addScheduleToCalendar(originEvent) {
 		  var event = {};
 
+		  event.id = originEvent.scheduleId;
 		  event.title = originEvent.title;
 		  event.start = moment(originEvent.startDt, rangeFormat).format("YYYY-MM-DDTHH:mm");
 		  event.end = moment(originEvent.endDt, rangeFormat).format("YYYY-MM-DDTHH:mm");
