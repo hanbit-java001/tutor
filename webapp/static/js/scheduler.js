@@ -1,4 +1,10 @@
 $(document).ready(function() {
+	var customViews = ["add"];
+
+	var currentView = "month";
+	var viewHistory = ["month"];
+
+	var loadedMonths = [];
 
     $("#calendar").fullCalendar({
     	timezone: "Korea/Seoul",
@@ -65,24 +71,24 @@ $(document).ready(function() {
     var currentMoment = moment();
 
     var range = {
-       	start: currentMoment.startOf("month").format(rangeFormat),
-       	end: currentMoment.endOf("month").format(rangeFormat)
+       	start: moment().startOf("month").format(rangeFormat),
+       	end: moment().endOf("month").format(rangeFormat)
     };
 
-    $("#btnBack").on("click", function() {
-    	changeView("month");
+    $(".btnBack").on("click", function() {
+    	backwardView();
     });
 
-    $("#btnPrevMonth").on("click", function() {
-    	showPrevMonth();
+    $("#btnPrev").on("click", function() {
+    	showPrev();
     });
 
-    $("#btnNextMonth").on("click", function() {
-    	showNextMonth();
+    $("#btnNext").on("click", function() {
+    	showNext();
     });
 
     $("#btnToday").on("click", function() {
-    	showThisMonth();
+    	showToday();
     });
 
     function handleDayClick(date) {
@@ -98,15 +104,39 @@ $(document).ready(function() {
     			changeView("listDay", date);
     		}
     		else {
-    			showAddSchedule(date);
+    			changeView("add", date);
     		}
     	});
     }
 
-    function changeView(viewName, date) {
-    	$("#calendar").fullCalendar("gotoDate", date);
+    function backwardView() {
+    	viewHistory = viewHistory.slice(0, viewHistory.length-1);
 
-		if (viewName == "month") {
+    	var viewName = viewHistory[viewHistory.length-1];
+
+    	changeView(viewName, null, true);
+    }
+
+    function changeView(viewName, date, isBack) {
+    	if (!isBack) {
+    		viewHistory.push(viewName);
+    	}
+
+    	currentView = viewName;
+
+		if (date && date != null) {
+			currentMoment = moment(date);
+	    	$("#calendar").fullCalendar("gotoDate", date);
+		}
+
+    	if (viewName == "add") {
+    		showAddSchedule(date);
+    	}
+    	else {
+    		hideAddSchedule();
+    	}
+
+    	if (viewHistory.length == 1) {
 			$("#btnGroupSub").hide();
 			$("#btnGroupMain").show();
 		}
@@ -115,21 +145,32 @@ $(document).ready(function() {
 			$("#btnGroupSub").show();
 		}
 
+		if (customViews.indexOf(viewName) > -1) {
+			return;
+		}
+
+		if ($("#calendar").fullCalendar("getView").name == viewName) {
+			return;
+		}
+
     	$("#calendar").fullCalendar("changeView", viewName);
     }
 
     function showAddSchedule(date) {
+    	var defaultDate = moment(date);
+
 		$("#btnGroupCalendar").hide();
 		$("#btnGroupAddSchedule").show();
 
 		$("#calendar").hide();
 		$("#divAddSchedule").show();
 
-		var defaultDate = date.set("hour", moment().get("hour")).startOf("hour");
+		defaultDate.set("hour", moment().get("hour"));
+		defaultDate.set("minute", moment().get("minute"));
 
 		$("#txtTitle").val("");
-		$("#txtStartDt").data("DateTimePicker").date(defaultDate);
-		$("#txtEndDt").data("DateTimePicker").date(defaultDate.add(1, "hour"));
+		$("#txtStartDt").data("DateTimePicker").date(defaultDate.subtract(0, "minutes"));
+		$("#txtEndDt").data("DateTimePicker").date(defaultDate.add(1, "hours"));
 		$("#txtMemo").val("");
     }
 
@@ -208,11 +249,11 @@ $(document).ready(function() {
 		  event.start = moment(originEvent.startDt, rangeFormat).format("YYYY-MM-DDTHH:mm");
 		  event.end = moment(originEvent.endDt, rangeFormat).format("YYYY-MM-DDTHH:mm");
 
-		  $("#calendar").fullCalendar("renderEvent", event);
+		  $("#calendar").fullCalendar("renderEvent", event, true);
 	}
 
     $("#btnAddSchedule").on("click", function() {
-    	showAddSchedule(moment());
+    	changeView("add", currentMoment);
     });
 
     $(".btnApplyAddSchedule").on("click", function() {
@@ -223,8 +264,9 @@ $(document).ready(function() {
     	hideAddSchedule();
     });
 
-    function showThisMonth() {
-    	if (currentMoment.format("YYYYMM") == moment().format("YYYYMM")) {
+    function showToday() {
+    	if (currentView == "month"
+    		&& currentMoment.format("YYYYMM") == moment().format("YYYYMM")) {
     		return;
     	}
 
@@ -235,27 +277,47 @@ $(document).ready(function() {
     	getMonthlySchedules();
     }
 
-    function showPrevMonth() {
+    function showPrev() {
     	$("#calendar").fullCalendar("prev");
 
-    	currentMoment = currentMoment.subtract(1, "month");
+    	if (currentView == "month") {
+    		currentMoment.subtract(1, "months");
+    	}
+    	else if (currentView == "listDay") {
+    		currentMoment.subtract(1, "days");
+    	}
 
-    	getMonthlySchedules();
+		getMonthlySchedules();
     }
 
-    function showNextMonth() {
+    function showNext() {
     	$("#calendar").fullCalendar("next");
 
-    	currentMoment = currentMoment.add(1, "month");
+    	if (currentView == "month") {
+    		currentMoment.add(1, "months");
+    	}
+    	else if (currentView == "listDay") {
+    		currentMoment.add(1, "days");
+    	}
 
-    	getMonthlySchedules();
+		getMonthlySchedules();
     }
 
     function getMonthlySchedules() {
-    	range.start = currentMoment.startOf("month").format(rangeFormat);
-    	range.end = currentMoment.endOf("month").format(rangeFormat);
+    	var currentMonth = currentMoment.format("YYYYMM");
+
+    	if (loadedMonths.indexOf(currentMonth) > -1) {
+    		return;
+    	}
+
+    	var rangeMoment = moment(currentMoment);
+
+    	range.start = rangeMoment.startOf("month").format(rangeFormat);
+    	range.end = rangeMoment.endOf("month").format(rangeFormat);
 
     	getSchedules(range.start, range.end);
+
+    	loadedMonths.push(currentMonth);
     }
 
     function getSchedules(startDt, endDt) {

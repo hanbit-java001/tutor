@@ -24,20 +24,20 @@
 		</div>
 
 		<div id="btnGroupSub">
-			<div id="btnBack" class="hanbit-top-button">
+			<div class="btnBack hanbit-top-button">
 				<i class="material-icons hanbit-abs-center">navigate_before</i>
 			</div>
 		</div>
 
 		<div id="btnGroupRight">
 			<div id="btnGroupCalendar">
-				<div id="btnPrevMonth" class="hanbit-top-button right arrow">
+				<div id="btnPrev" class="hanbit-top-button right arrow">
 					<i class="material-icons hanbit-abs-center">keyboard_arrow_left</i>
 				</div>
 				<div id="btnToday" class="hanbit-top-button right">
 					<i class="material-icons hanbit-abs-center">today</i>
 				</div>
-				<div id="btnNextMonth" class="hanbit-top-button right arrow">
+				<div id="btnNext" class="hanbit-top-button right arrow">
 					<i class="material-icons hanbit-abs-center">keyboard_arrow_right</i>
 				</div>
 				<div id="btnAddSchedule" class="hanbit-top-button right">
@@ -48,9 +48,6 @@
 			<div id="btnGroupAddSchedule">
 				<div class="btnApplyAddSchedule hanbit-top-button right">
 					<i class="material-icons hanbit-abs-center">done</i>
-				</div>
-				<div class="btnCancelAddSchedule hanbit-top-button right">
-					<i class="material-icons hanbit-abs-center">clear</i>
 				</div>
 			</div>
 		</div>
@@ -78,7 +75,7 @@
 			</div>
 			<div class="bottom-buttons">
 				<button class="btnApplyAddSchedule btn btn-success">추가</button>
-				<button class="btnCancelAddSchedule btn btn-danger">취소</button>
+				<button class="btnBack btn btn-danger">취소</button>
 			</div>
 		</div>
 	</div>
