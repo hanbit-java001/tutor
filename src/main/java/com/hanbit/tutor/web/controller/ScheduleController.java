@@ -1,8 +1,8 @@
 package com.hanbit.tutor.web.controller;
 
+import java.util.HashMap;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,6 +54,20 @@ public class ScheduleController {
 		}
 
 		return schedule;
+	}
+
+	@RequestMapping("/api/schedule/countSchedule")
+	@ResponseBody
+	public Map countSchedule(@RequestParam("startDt") String startDt,
+			@RequestParam("endDt") String endDt) {
+
+		int eventCount = schedulerService.countSchedule(startDt, endDt);
+
+		Map result = new HashMap();
+
+		result.put("eventCount", eventCount);
+
+		return result;
 	}
 
 }

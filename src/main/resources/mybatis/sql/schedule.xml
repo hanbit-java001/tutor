@@ -36,4 +36,12 @@
 		WHERE SCHEDULE_ID = #{scheduleId}
 	</select>
 
+	<select id="countSchedule" parameterType="map" resultType="int">
+	<![CDATA[
+		SELECT COUNT(SCHEDULE_ID)
+		FROM SCHEDULE
+		WHERE START_DT <= #{endDt} AND END_DT >= #{startDt}
+	]]>
+	</select>
+
 </mapper>

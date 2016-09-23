@@ -51,4 +51,8 @@ public class SchedulerService {
 		return uniqueId;
 	}
 
+	public int countSchedule(String startDt, String endDt) {
+		return scheduleDAO.countSchedule(startDt, endDt);
+	}
+
 }
