@@ -76,7 +76,31 @@
 			</div>
 			<div class="bottom-buttons">
 				<button class="btnApplyAddSchedule btn btn-success">추가</button>
-				<button class="btnBack btn btn-danger">취소</button>
+				<button class="btnBack btn btn-default">취소</button>
+			</div>
+		</div>
+
+		<div id="divDetailSchedule">
+			<div class="form-group">
+    			<label>제목</label>
+    			<div id="detailTitle"></div>
+			</div>
+			<div class="form-group">
+    			<label>시작</label>
+    			<div id="detailStartDt"></div>
+			</div>
+			<div class="form-group">
+    			<label>종료</label>
+    			<div id="detailEndDt"></div>
+			</div>
+			<div class="form-group">
+    			<label>메모</label>
+    			<div id="detailMemo"></div>
+			</div>
+			<div class="bottom-buttons">
+				<button class="btnUpdate btn btn-warning">수정</button>
+				<button class="btnDelete btn btn-danger">삭제</button>
+				<button class="btnBack btn btn-default">취소</button>
 			</div>
 		</div>
 	</div>

@@ -23,7 +23,7 @@
 
 	<select id="selectSchedules" parameterType="map" resultType="com.hanbit.tutor.core.vo.ScheduleVO">
 	<![CDATA[
-		SELECT SCHEDULE_ID, TITLE, MEMO, START_DT, END_DT
+		SELECT SCHEDULE_ID, TITLE, START_DT, END_DT
 		FROM SCHEDULE
 		WHERE START_DT <= #{endDt} AND END_DT >= #{startDt}
 		ORDER BY START_DT

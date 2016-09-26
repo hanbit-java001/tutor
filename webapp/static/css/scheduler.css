@@ -48,6 +48,11 @@
 	position: relative;
 }
 
+#divDetailSchedule {
+	display: none;
+	position: relative;
+}
+
 #divAddSchedule .form-control[readonly] {
 	background-color: white;
 }
@@ -83,4 +88,8 @@
 	top: 50%;
 	right: 5px;
 	transform: translateY(-50%);
+}
+
+.fc-event, .fc-list-item-title {
+	cursor: pointer;
 }

@@ -1,5 +1,15 @@
 $(document).ready(function() {
-	var customViews = ["add"];
+	var isMobile = navigator.userAgent.indexOf("Mobile") > -1;
+	var customViews = ["add", "detail"];
+
+    var dbFormat = "YYYYMMDDHHmm";
+    var viewFormat = "YYYY-MM-DD a HH:mm";
+    var currentMoment = moment();
+
+    var range = {
+       	start: moment().startOf("month").format(dbFormat),
+       	end: moment().endOf("month").format(dbFormat)
+    };
 
 	var currentView = "month";
 	var viewHistory = ["month"];
@@ -34,17 +44,33 @@ $(document).ready(function() {
         	var jqTarget = $(jsEvent.target);
 
         	if (jqTarget.hasClass("delete-schedule")) {
+        		removeSchedule(calEvent.id);
+        	}
+        	else {
         		$.ajax({
         			url: "/api/schedule/" + calEvent.id,
-        			method: "DELETE"
+        			method: "GET"
         		}).done(function(result) {
-        			if (result.countRemove > 0) {
-        				$("#calendar").fullCalendar("removeEvents", calEvent.id);
-        			}
+        			changeView("detail", {schedule: result});
         		});
         	}
         }
     });
+
+    function removeSchedule(scheduleId) {
+		$.ajax({
+			url: "/api/schedule/" + scheduleId,
+			method: "DELETE"
+		}).done(function(result) {
+			if (result.countRemove > 0) {
+				if (currentView == "detail") {
+					backwardView();
+				}
+
+				$("#calendar").fullCalendar("removeEvents", scheduleId);
+			}
+		});
+    }
 
     $("#txtStartDt").datetimepicker({
     	locale: "ko",
@@ -62,18 +88,10 @@ $(document).ready(function() {
     	showClose: true
     });
 
-	if (navigator.userAgent.indexOf("Mobile") > -1) {
+	if (isMobile) {
 		$("#txtStartDt").attr("readonly", "readonly");
 		$("#txtEndDt").attr("readonly", "readonly");
 	}
-
-    var rangeFormat = "YYYYMMDDHHmm";
-    var currentMoment = moment();
-
-    var range = {
-       	start: moment().startOf("month").format(rangeFormat),
-       	end: moment().endOf("month").format(rangeFormat)
-    };
 
     $(".btnBack").on("click", function() {
     	backwardView();
@@ -91,20 +109,26 @@ $(document).ready(function() {
     	showToday();
     });
 
+    $(".btnDelete").on("click", function() {
+    	var scheduleId = $(this).attr("scheduleId");
+
+    	removeSchedule(scheduleId);
+    });
+
     function handleDayClick(date) {
     	$.ajax({
     		url: "/api/schedule/countSchedule",
     		method: "GET",
     		data: {
-    			startDt: date.startOf("day").format(rangeFormat),
-    			endDt: date.endOf("day").format(rangeFormat)
+    			startDt: date.startOf("day").format(dbFormat),
+    			endDt: date.endOf("day").format(dbFormat)
     		}
     	}).done(function(result) {
     		if (result.eventCount > 0) {
-    			changeView("listDay", date);
+    			changeView("listDay", {date: date});
     		}
     		else {
-    			changeView("add", date);
+    			changeView("add", {date: date});
     		}
     	});
     }
@@ -117,14 +141,18 @@ $(document).ready(function() {
     	changeView(viewName, null, true);
     }
 
-    function changeView(viewName, date, isBack) {
+    function changeView(viewName, data, isBack) {
     	if (!isBack) {
     		viewHistory.push(viewName);
     	}
 
     	currentView = viewName;
 
-		if (date && date != null) {
+    	var date;
+
+		if (data && data != null) {
+			date = data.date;
+
 			currentMoment = moment(date);
 	    	$("#calendar").fullCalendar("gotoDate", date);
 		}
@@ -132,10 +160,17 @@ $(document).ready(function() {
     	if (viewName == "add") {
     		showAddSchedule(date);
     	}
+    	else if (viewName == "detail") {
+    		var schedule = data.schedule;
+
+    		showDetailSchedule(schedule);
+    	}
     	else {
     		hideAddSchedule();
+    		hideDetailSchedule();
     	}
 
+    	// 좌측 상단 메뉴 or 뒤로가기
     	if (viewHistory.length == 1) {
 			$("#btnGroupSub").hide();
 			$("#btnGroupMain").show();
@@ -145,6 +180,7 @@ $(document).ready(function() {
 			$("#btnGroupSub").show();
 		}
 
+    	// Custom View 체크
 		if (customViews.indexOf(viewName) > -1) {
 			return;
 		}
@@ -174,11 +210,49 @@ $(document).ready(function() {
 		$("#txtMemo").val("");
     }
 
+    function showDetailSchedule(schedule) {
+    	$("#btnGroupCalendar").hide();
+
+    	$("#calendar").hide();
+    	$("#divDetailSchedule").show();
+
+    	var event = {
+    		id: schedule.scheduleId,
+    		title: schedule.title,
+    		start: moment(schedule.startDt, dbFormat).format("YYYY-MM-DD a HH:mm"),
+    		end: moment(schedule.endDt, dbFormat).format("YYYY-MM-DD a HH:mm"),
+    		memo: newLineToBr(schedule.memo)
+    	};
+
+    	$("#detailTitle").html(event.title);
+    	$("#detailStartDt").html(event.start);
+    	$("#detailEndDt").html(event.end);
+    	$("#detailMemo").html(event.memo);
+    	$(".btnDelete").attr("scheduleId", event.id);
+    }
+
+    function newLineToBr(str) {
+    	if (str === undefined || str == null) {
+    		return "";
+    	}
+
+    	str = str.replace(/\n/g, "<br>");
+
+    	return str;
+    }
+
     function hideAddSchedule() {
 		$("#btnGroupAddSchedule").hide();
 		$("#btnGroupCalendar").show();
 
 		$("#divAddSchedule").hide();
+		$("#calendar").show();
+    }
+
+    function hideDetailSchedule() {
+		$("#btnGroupCalendar").show();
+
+		$("#divDetailSchedule").hide();
 		$("#calendar").show();
     }
 
@@ -217,8 +291,8 @@ $(document).ready(function() {
 
     	var schedule = {
 			title: title,
-			startDt: startDt.format(rangeFormat),
-			endDt: endDt.format(rangeFormat),
+			startDt: startDt.format(dbFormat),
+			endDt: endDt.format(dbFormat),
 			memo: memo
 		};
 
@@ -232,8 +306,7 @@ $(document).ready(function() {
 			$("#btnGroupAddSchedule").hide();
 			$("#btnGroupCalendar").show();
 
-			$("#divAddSchedule").hide();
-			$("#calendar").show();
+			backwardView();
 
 			addScheduleToCalendar(result);
 		}).fail(function() {
@@ -246,14 +319,14 @@ $(document).ready(function() {
 
 		  event.id = originEvent.scheduleId;
 		  event.title = originEvent.title;
-		  event.start = moment(originEvent.startDt, rangeFormat).format("YYYY-MM-DDTHH:mm");
-		  event.end = moment(originEvent.endDt, rangeFormat).format("YYYY-MM-DDTHH:mm");
+		  event.start = moment(originEvent.startDt, dbFormat).format("YYYY-MM-DDTHH:mm");
+		  event.end = moment(originEvent.endDt, dbFormat).format("YYYY-MM-DDTHH:mm");
 
 		  $("#calendar").fullCalendar("renderEvent", event, true);
 	}
 
     $("#btnAddSchedule").on("click", function() {
-    	changeView("add", currentMoment);
+    	changeView("add", {date: currentMoment});
     });
 
     $(".btnApplyAddSchedule").on("click", function() {
@@ -312,8 +385,8 @@ $(document).ready(function() {
 
     	var rangeMoment = moment(currentMoment);
 
-    	range.start = rangeMoment.startOf("month").format(rangeFormat);
-    	range.end = rangeMoment.endOf("month").format(rangeFormat);
+    	range.start = rangeMoment.startOf("month").format(dbFormat);
+    	range.end = rangeMoment.endOf("month").format(dbFormat);
 
     	getSchedules(range.start, range.end);
 
