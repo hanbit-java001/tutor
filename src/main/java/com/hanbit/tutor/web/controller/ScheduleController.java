@@ -92,4 +92,17 @@ public class ScheduleController {
 		return schedulerService.getSchedule(scheduleId);
 	}
 
+	@RequestMapping("/api/schedule/modify")
+	@ResponseBody
+	public ScheduleVO modifySchedule(@RequestBody ScheduleVO schedule) {
+
+		int countModified = schedulerService.modifySchedule(schedule);
+
+		if (countModified == 0) {
+			throw new RuntimeException();
+		}
+
+		return schedule;
+	}
+
 }

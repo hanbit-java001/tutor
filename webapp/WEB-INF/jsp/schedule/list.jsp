@@ -57,7 +57,8 @@
 	<div class="hanbit-container">
 		<div id="calendar"></div>
 
-		<div id="divAddSchedule" class="hidden-view">
+		<div id="divUpdateSchedule" class="hidden-view">
+			<input type="hidden" id="txtScheduleId">
 			<div class="form-group">
     			<label for="txtTitle">제목</label>
     			<input type="text" class="form-control" id="txtTitle" placeholder="제목">
@@ -100,29 +101,6 @@
 			<div class="bottom-buttons">
 				<button class="btnUpdate btn btn-warning">수정</button>
 				<button class="btnDelete btn btn-danger">삭제</button>
-				<button class="btnBack btn btn-default">취소</button>
-			</div>
-		</div>
-
-		<div id="divModifySchedule" class="hidden-view">
-			<div class="form-group">
-    			<label for="txtTitle">제목</label>
-    			<input type="text" class="form-control" id="txtTitle" placeholder="제목">
-			</div>
-			<div class="form-group">
-    			<label for="txtStartDt">시작</label>
-    			<input type="text" class="form-control" id="txtStartDt" placeholder="시작">
-			</div>
-			<div class="form-group">
-    			<label for="txtEndDt">종료</label>
-    			<input type="text" class="form-control" id="txtEndDt" placeholder="종료">
-			</div>
-			<div class="form-group">
-    			<label for="txtMemo">메모</label>
-    			<textarea class="form-control" id="txtMemo" placeholder="메모" rows="3"></textarea>
-			</div>
-			<div class="bottom-buttons">
-				<button class="btnApplySchedule btn btn-success">저장</button>
 				<button class="btnBack btn btn-default">취소</button>
 			</div>
 		</div>
