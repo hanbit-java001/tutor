@@ -46,8 +46,8 @@
 				</div>
 			</div>
 
-			<div id="btnGroupAddSchedule">
-				<div class="btnApplyAddSchedule hanbit-top-button right">
+			<div id="btnGroupUpdateSchedule">
+				<div class="btnApplySchedule hanbit-top-button right">
 					<i class="material-icons hanbit-abs-center">done</i>
 				</div>
 			</div>
@@ -57,7 +57,7 @@
 	<div class="hanbit-container">
 		<div id="calendar"></div>
 
-		<div id="divAddSchedule">
+		<div id="divAddSchedule" class="hidden-view">
 			<div class="form-group">
     			<label for="txtTitle">제목</label>
     			<input type="text" class="form-control" id="txtTitle" placeholder="제목">
@@ -75,12 +75,12 @@
     			<textarea class="form-control" id="txtMemo" placeholder="메모" rows="3"></textarea>
 			</div>
 			<div class="bottom-buttons">
-				<button class="btnApplyAddSchedule btn btn-success">추가</button>
+				<button class="btnApplySchedule btn btn-success">저장</button>
 				<button class="btnBack btn btn-default">취소</button>
 			</div>
 		</div>
 
-		<div id="divDetailSchedule">
+		<div id="divDetailSchedule" class="hidden-view">
 			<div class="form-group">
     			<label>제목</label>
     			<div id="detailTitle"></div>
@@ -100,6 +100,29 @@
 			<div class="bottom-buttons">
 				<button class="btnUpdate btn btn-warning">수정</button>
 				<button class="btnDelete btn btn-danger">삭제</button>
+				<button class="btnBack btn btn-default">취소</button>
+			</div>
+		</div>
+
+		<div id="divModifySchedule" class="hidden-view">
+			<div class="form-group">
+    			<label for="txtTitle">제목</label>
+    			<input type="text" class="form-control" id="txtTitle" placeholder="제목">
+			</div>
+			<div class="form-group">
+    			<label for="txtStartDt">시작</label>
+    			<input type="text" class="form-control" id="txtStartDt" placeholder="시작">
+			</div>
+			<div class="form-group">
+    			<label for="txtEndDt">종료</label>
+    			<input type="text" class="form-control" id="txtEndDt" placeholder="종료">
+			</div>
+			<div class="form-group">
+    			<label for="txtMemo">메모</label>
+    			<textarea class="form-control" id="txtMemo" placeholder="메모" rows="3"></textarea>
+			</div>
+			<div class="bottom-buttons">
+				<button class="btnApplySchedule btn btn-success">저장</button>
 				<button class="btnBack btn btn-default">취소</button>
 			</div>
 		</div>

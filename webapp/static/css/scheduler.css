@@ -39,16 +39,11 @@
 	padding: 58px 10px 10px 10px;
 }
 
-#btnGroupAddSchedule {
+#btnGroupUpdateSchedule {
 	display: none;
 }
 
-#divAddSchedule {
-	display: none;
-	position: relative;
-}
-
-#divDetailSchedule {
+.hidden-view {
 	display: none;
 	position: relative;
 }

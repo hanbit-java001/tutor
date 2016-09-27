@@ -1,6 +1,6 @@
 $(document).ready(function() {
 	var isMobile = navigator.userAgent.indexOf("Mobile") > -1;
-	var customViews = ["add", "detail"];
+	var customViews = ["add", "detail", "modify"];
 
     var dbFormat = "YYYYMMDDHHmm";
     var viewFormat = "YYYY-MM-DD a HH:mm";
@@ -47,12 +47,9 @@ $(document).ready(function() {
         		removeSchedule(calEvent.id);
         	}
         	else {
-        		$.ajax({
-        			url: "/api/schedule/" + calEvent.id,
-        			method: "GET"
-        		}).done(function(result) {
-        			changeView("detail", {schedule: result});
-        		});
+            	getSchedule(scheduleId, function() {
+            		changeView("detail", {schedule: result});
+            	});
         	}
         }
     });
@@ -108,6 +105,23 @@ $(document).ready(function() {
     $("#btnToday").on("click", function() {
     	showToday();
     });
+
+    $(".btnUpdate").on("click", function() {
+    	var scheduleId = $(this).attr("scheduleId");
+
+    	getSchedule(scheduleId, function() {
+    		changeView("modify", {schedule: result});
+    	});
+    });
+
+    function getSchedule(scheduleId, callback) {
+		$.ajax({
+			url: "/api/schedule/" + scheduleId,
+			method: "GET"
+		}).done(function(result) {
+			callback();
+		});
+    }
 
     $(".btnDelete").on("click", function() {
     	var scheduleId = $(this).attr("scheduleId");
@@ -165,6 +179,11 @@ $(document).ready(function() {
 
     		showDetailSchedule(schedule);
     	}
+    	else if (viewName == "modify") {
+    		var schedule = data.schedule;
+
+    		showModifySchedule(schedule);
+    	}
     	else {
     		hideAddSchedule();
     		hideDetailSchedule();
@@ -196,7 +215,7 @@ $(document).ready(function() {
     	var defaultDate = moment(date);
 
 		$("#btnGroupCalendar").hide();
-		$("#btnGroupAddSchedule").show();
+		$("#btnGroupUpdateSchedule").show();
 
 		$("#calendar").hide();
 		$("#divAddSchedule").show();
@@ -228,7 +247,24 @@ $(document).ready(function() {
     	$("#detailStartDt").html(event.start);
     	$("#detailEndDt").html(event.end);
     	$("#detailMemo").html(event.memo);
+    	$(".btnUpdate").attr("scheduleId", event.id);
     	$(".btnDelete").attr("scheduleId", event.id);
+    }
+
+    function showModifySchedule(schedule) {
+    	$("#btnGroupCalendar").hide();
+    	$("#btnGroupUpdateSchedule").show();
+
+		$("#calendar").hide();
+		$("#divModifySchedule").show();
+
+		var startDt = moment(schedule.startDt, dbFormat);
+		var endDt = moment(schedule.endDt, dbFormat);
+
+		$("#txtTitle").val(schedule.title);
+		$("#txtStartDt").data("DateTimePicker").date(startDt);
+		$("#txtEndDt").data("DateTimePicker").date(endDt);
+		$("#txtMemo").val(schedule.memo);
     }
 
     function newLineToBr(str) {
@@ -242,7 +278,7 @@ $(document).ready(function() {
     }
 
     function hideAddSchedule() {
-		$("#btnGroupAddSchedule").hide();
+		$("#btnGroupUpdateSchedule").hide();
 		$("#btnGroupCalendar").show();
 
 		$("#divAddSchedule").hide();
@@ -303,7 +339,7 @@ $(document).ready(function() {
 			dataType: "json",
 			data: JSON.stringify(schedule)
 		}).done(function(result) {
-			$("#btnGroupAddSchedule").hide();
+			$("#btnGroupUpdateSchedule").hide();
 			$("#btnGroupCalendar").show();
 
 			backwardView();
@@ -329,7 +365,7 @@ $(document).ready(function() {
     	changeView("add", {date: currentMoment});
     });
 
-    $(".btnApplyAddSchedule").on("click", function() {
+    $(".btnApplySchedule").on("click", function() {
     	addSchedule();
     });
 
