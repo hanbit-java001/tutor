@@ -3,14 +3,14 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="schedule">
 
-	<insert id="insertSchedule" parameterType="com.hanbit.tutor.core.vo.ScheduleVO">
+	<insert id="insertSchedule" parameterType="ScheduleVO">
 		INSERT INTO SCHEDULE
 			(SCHEDULE_ID, TITLE, MEMO, START_DT, END_DT)
 		VALUES
 			(#{scheduleId}, #{title}, #{memo}, #{startDt}, #{endDt})
 	</insert>
 
-	<update id="updateSchedule" parameterType="com.hanbit.tutor.core.vo.ScheduleVO">
+	<update id="updateSchedule" parameterType="ScheduleVO">
 		UPDATE SCHEDULE SET
 			TITLE = #{title}, MEMO = #{memo},
 			START_DT = #{startDt}, END_DT = #{endDt}
@@ -21,7 +21,7 @@
 		DELETE FROM SCHEDULE WHERE SCHEDULE_ID = #{scheduleId}
 	</delete>
 
-	<select id="selectSchedules" parameterType="map" resultType="com.hanbit.tutor.core.vo.ScheduleVO">
+	<select id="selectSchedules" parameterType="map" resultType="ScheduleVO">
 	<![CDATA[
 		SELECT SCHEDULE_ID, TITLE, START_DT, END_DT
 		FROM SCHEDULE
@@ -30,7 +30,7 @@
 	]]>
 	</select>
 
-	<select id="selectSchedule" parameterType="string" resultType="com.hanbit.tutor.core.vo.ScheduleVO">
+	<select id="selectSchedule" parameterType="string" resultType="ScheduleVO">
 		SELECT SCHEDULE_ID, TITLE, MEMO, START_DT, END_DT
 		FROM SCHEDULE
 		WHERE SCHEDULE_ID = #{scheduleId}
