@@ -6,6 +6,7 @@ public class MemberVO {
 	private String name;
 	private String email;
 	private String password;
+	private String currentPassword;
 
 	public int getMemberId() {
 		return memberId;
@@ -37,6 +38,14 @@ public class MemberVO {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getCurrentPassword() {
+		return currentPassword;
+	}
+
+	public void setCurrentPassword(String currentPassword) {
+		this.currentPassword = currentPassword;
 	}
 
 }
