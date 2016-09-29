@@ -17,23 +17,27 @@ public class MemberDAO {
 	private SqlSession sqlSession;
 
 	public int countMember(String email) {
-
-		return 0;
+		return sqlSession.selectOne("member.countMember", email);
 	}
 
 	public int insertMember(MemberVO member) {
+		return sqlSession.insert("member.insertMember", member);
+	}
 
-		return 0;
+	public int selectMemberId(String email) {
+		return sqlSession.selectOne("member.selectMemberId", email);
 	}
 
 	public String selectPassword(int memberId) {
-
-		return null;
+		return sqlSession.selectOne("member.selectPassword", memberId);
 	}
 
 	public int updateMember(MemberVO member) {
+		return sqlSession.update("member.updateMember", member);
+	}
 
-		return 0;
+	public int selectNextMemberId() {
+		return sqlSession.selectOne("member.selectNextMemberId");
 	}
 
 }

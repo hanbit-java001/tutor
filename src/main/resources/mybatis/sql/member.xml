@@ -4,15 +4,40 @@
 <mapper namespace="member">
 
 	<select id="countMember" parameterType="string" resultType="int">
+		SELECT COUNT(member_id)
+		  FROM MEMBER
+		 WHERE member_email = #{email}
 	</select>
 
 	<insert id="insertMember" parameterType="MemberVO">
+		INSERT INTO MEMBER
+			(member_id, member_name, member_email, member_pw)
+		VALUES
+			(#{memberId}, #{name}, #{email}, #{password})
 	</insert>
 
+	<select id="selectMemberId" parameterType="string" resultType="int">
+		SELECT member_id
+		  FROM MEMBER
+		 WHERE member_email = #{email}
+	</select>
+
 	<select id="selectPassword" parameterType="int" resultType="string">
+		SELECT password
+		  FROM MEMBER
+		 WHERE member_id = #{memberId}
 	</select>
 
 	<update id="updateMember" parameterType="MemberVO">
+		UPDATE MEMBER
+		   SET member_name = #{name},
+		       member_email = #{email},
+		       member_pw = #{password}
 	</update>
+
+	<select id="selectNextMemberId" resultType="int">
+		SELECT SEQ_MEMBER.NEXTVAL
+		  FROM DUAL
+	</select>
 
 </mapper>
