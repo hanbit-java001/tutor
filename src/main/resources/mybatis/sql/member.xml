@@ -16,6 +16,25 @@
 			(#{memberId}, #{name}, #{email}, #{password})
 	</insert>
 
+	<select id="selectMember" parameterType="map" resultType="MemberVO">
+		SELECT member_id AS memberId,
+			   member_name AS name,
+			   member_email AS email,
+			   member_pw AS password
+		  FROM MEMBER
+		 <choose>
+		 	<when test="email != null">
+		 		WHERE member_email = #{email}
+		 	</when>
+		 	<when test="memberId != null">
+		 		WHERE member_id = #{memberId}
+		 	</when>
+		 	<otherwise>
+		 		WHERE email = '!@#$'
+		 	</otherwise>
+		 </choose>
+	</select>
+
 	<select id="selectMemberId" parameterType="string" resultType="int">
 		SELECT member_id
 		  FROM MEMBER

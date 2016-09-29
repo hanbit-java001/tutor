@@ -58,4 +58,8 @@ public class MemberService {
 		return countUpdate > 0;
 	}
 
+	public MemberVO getMember(int memberId) {
+		return memberDAO.selectMember(memberId);
+	}
+
 }

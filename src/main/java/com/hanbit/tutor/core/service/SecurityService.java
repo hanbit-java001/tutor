@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.hanbit.tutor.core.dao.MemberDAO;
+import com.hanbit.tutor.core.vo.MemberVO;
 
 @Service
 public class SecurityService {
@@ -27,23 +28,23 @@ public class SecurityService {
 		return encoder.matches(rawPassword, encryptedPassword);
 	}
 
-	public int getValidMemberId(String email, String password) {
-		int memberId = -1;
+	public MemberVO getValidMember(String email, String password) {
+		MemberVO member = null;
 
 		try {
-			memberId = memberDAO.selectMemberId(email);
+			member = memberDAO.selectMember(email);
 		}
 		catch (Exception e) {
 			throw new RuntimeException("가입되지 않은 이메일입니다.");
 		}
 
-		String encryptedPassword = memberDAO.selectPassword(memberId);
+		String encryptedPassword = member.getPassword();
 
 		if (!matchPassword(password, encryptedPassword)) {
 			throw new RuntimeException("패스워드가 일치하지 않습니다.");
 		}
 
-		return memberId;
+		return member;
 	}
 
 
