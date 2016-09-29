@@ -29,12 +29,9 @@ public class SecurityService {
 	}
 
 	public MemberVO getValidMember(String email, String password) {
-		MemberVO member = null;
+		MemberVO member = memberDAO.selectMember(email);
 
-		try {
-			member = memberDAO.selectMember(email);
-		}
-		catch (Exception e) {
+		if (member == null) {
 			throw new RuntimeException("가입되지 않은 이메일입니다.");
 		}
 

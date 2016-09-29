@@ -1,7 +1,5 @@
 package com.hanbit.tutor.standalone;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-
 public class Location {
 	public static final String HOSPITAL = "병원";
 	public static final String HOME = "집";
