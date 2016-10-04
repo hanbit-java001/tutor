@@ -40,7 +40,9 @@ public class MemberController {
 			String paramName = paramNames.next();
 
 			MultipartFile file = request.getFile(paramName);
-			LOGGER.debug(file.getOriginalFilename() + "/" + file.getSize());
+			
+			// 1. fileId 생성
+			// 2. file data 저장
 		}
 
 		return new HashMap();
