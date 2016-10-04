@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="/static/plugins/material/iconfont/material-icons.css">
 <link rel="stylesheet" href="/static/plugins/fullcalendar/fullcalendar.min.css" />
 <link rel="stylesheet" href="/static/plugins/datetimepicker/css/bootstrap-datetimepicker.min.css" />
+<link rel="stylesheet" href="/static/css/common.css" />
 <link rel="stylesheet" href="/static/css/scheduler.css" />
 </head>
 <body>
