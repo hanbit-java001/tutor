@@ -11,9 +11,9 @@
 
 	<insert id="insertMember" parameterType="MemberVO">
 		INSERT INTO MEMBER
-			(member_id, member_name, member_email, member_pw)
+			(member_id, member_name, member_email, member_pw, member_profile)
 		VALUES
-			(#{memberId}, #{name}, #{email}, #{password})
+			(#{memberId}, #{name}, #{email}, #{password}, #{profileFileId})
 	</insert>
 
 	<select id="selectMember" parameterType="map" resultType="MemberVO">

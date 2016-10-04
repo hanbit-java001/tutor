@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="file">
+
+	<insert id="insertFile" parameterType="FileVO">
+		INSERT INTO FILES
+			(file_id, file_path)
+		VALUES
+			(#{fileId}, #{filePath})
+	</insert>
+
+	<select id="selectFile" parameterType="string" resultType="FileVO">
+		SELECT file_id, file_path
+		  FROM FILES
+		 WHERE file_id = #{fileId}
+	</select>
+
+</mapper>

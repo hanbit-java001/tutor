@@ -6,19 +6,28 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import com.hanbit.tutor.core.service.FileService;
+import com.hanbit.tutor.core.service.MemberService;
+import com.hanbit.tutor.core.vo.MemberVO;
 
 @Controller
 public class MemberController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(MemberController.class);
+
+	@Autowired
+	private MemberService memberService;
+
+	@Autowired
+	private FileService fileService;
 
 	@RequestMapping("/member/join")
 	public String join() {
@@ -28,11 +37,12 @@ public class MemberController {
 
 	@RequestMapping(value="/api/member/join", method=RequestMethod.POST)
 	@ResponseBody
-	public Map doJoin(MultipartHttpServletRequest request) {
+	public Map doJoin(MultipartHttpServletRequest request) throws Exception {
 
 		String name = request.getParameter("name");
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
+		String fileId = null;
 
 		Iterator<String> paramNames = request.getFileNames();
 
@@ -40,12 +50,22 @@ public class MemberController {
 			String paramName = paramNames.next();
 
 			MultipartFile file = request.getFile(paramName);
-			
-			// 1. fileId 생성
-			// 2. file data 저장
+
+			fileId = fileService.storeFile(file.getBytes());
 		}
 
-		return new HashMap();
+		MemberVO member = new MemberVO();
+		member.setName(name);
+		member.setEmail(email);
+		member.setPassword(password);
+		member.setProfileFileId(fileId);
+
+		memberService.joinMember(member);
+
+		Map result = new HashMap();
+		result.put("name", name);
+
+		return result;
 	}
 
 }
