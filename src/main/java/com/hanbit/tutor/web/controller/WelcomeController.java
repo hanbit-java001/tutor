@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class WelcomeController {
 
 	@RequestMapping("/")
-	public String welcome(Model model) {
-
-		model.addAttribute("name", "Hanbit");
+	public String welcome() {
 
 		return "welcome";
 	}

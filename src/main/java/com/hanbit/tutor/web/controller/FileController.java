@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hanbit.tutor.core.service.FileService;
+import com.hanbit.tutor.core.vo.FileVO;
 
 @Controller
 public class FileController {
@@ -23,12 +24,13 @@ public class FileController {
 	public void getFile(@PathVariable("fileId") String fileId,
 			HttpServletResponse response) throws Exception {
 
-		byte[] fileData = fileService.getFileData(fileId);
+		FileVO fileVO = fileService.getFile(fileId);
 
-		response.setContentType("image/jpg");
+		response.setContentType(fileVO.getContentType());
+		response.setContentLengthLong(fileVO.getFileSize());
 
 		OutputStream outputStream = response.getOutputStream();
-		outputStream.write(fileData);
+		outputStream.write(fileVO.getFileData());
 		outputStream.close();
 	}
 

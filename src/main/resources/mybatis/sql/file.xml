@@ -5,15 +5,21 @@
 
 	<insert id="insertFile" parameterType="FileVO">
 		INSERT INTO FILES
-			(file_id, file_path)
+			(file_id, file_path, content_type, file_size, file_name)
 		VALUES
-			(#{fileId}, #{filePath})
+			(#{fileId}, #{filePath}, #{contentType}, #{fileSize}, #{fileName})
 	</insert>
 
 	<select id="selectFile" parameterType="string" resultType="FileVO">
-		SELECT file_id, file_path
+		SELECT file_id, file_path, content_type, file_size, file_name
 		  FROM FILES
 		 WHERE file_id = #{fileId}
 	</select>
+
+	<delete id="deleteFile" parameterType="string">
+		DELETE
+		  FROM FILES
+		 WHERE file_id = #{fileId}
+	</delete>
 
 </mapper>

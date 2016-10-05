@@ -46,7 +46,11 @@ $(function() {
 			contentType: false,
 			processData: false
 		}).done(function(result) {
-			console.log(result);
+			var name = result.name;
+
+			alert(name + "님 환영합니다.");
+
+			location.href = "/";
 		});
 	});
 });
