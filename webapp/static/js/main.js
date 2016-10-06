@@ -8,6 +8,9 @@ $(function() {
 		else if (menuId == "menuLogin") {
 			showLoginDialog();
 		}
+		else if (menuId == "menuLogout") {
+			location.href = "/security/logout";
+		}
 		else if (menuId == "menuScheduler") {
 			location.href = "/schedule/list";
 		}
@@ -78,4 +81,16 @@ $(function() {
 			$(".beforeLogin").css("display", "inline-block");
 		}
 	}
+
+	$.ajax({
+		url: "/api/security/isLoggedIn",
+		method: "GET"
+	}).done(function(result) {
+		if (result.name == "") {
+			showMenu(false);
+		}
+		else {
+			showMenu(true);
+		}
+	});
 });

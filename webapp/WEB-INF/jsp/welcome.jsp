@@ -22,11 +22,11 @@
 				<div class="main-logo">한빛 스케줄러</div>
 				<div class="main-menu">
 					<ul>
+						<li id="menuScheduler">스케줄러</li>
 						<li id="menuJoin" class="beforeLogin">회원가입</li>
 						<li id="menuLogin" class="beforeLogin">로그인</li>
 						<li id="menuMypage" class="afterLogin">마이페이지</li>
 						<li id="menuLogout" class="afterLogin">로그아웃</li>
-						<li id="menuScheduler">스케줄러</li>
 					</ul>
 				</div>
 			</div>
