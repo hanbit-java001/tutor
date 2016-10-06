@@ -44,7 +44,7 @@ public class MemberController {
 		String name = request.getParameter("name");
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
-		String fileId = null;
+		String fileId = "";
 
 		Iterator<String> paramNames = request.getFileNames();
 
@@ -75,6 +75,8 @@ public class MemberController {
 			if (StringUtils.isNotBlank(fileId)) {
 				fileService.removeFile(fileId);
 			}
+
+			throw new RuntimeException(e.getMessage(), e);
 		}
 
 		Map result = new HashMap();

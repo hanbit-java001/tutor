@@ -61,6 +61,10 @@ html, body {
 	cursor: pointer;
 	border-bottom: 2px solid transparent;
 }
+.main-menu ul li.afterLogin {
+	display: none;
+}
+
 @media (max-width: 768px) {
 	.main-menu ul li {
 		font-size: 12px;
