@@ -28,7 +28,7 @@ public class FileService {
 		String filePath = "/files/" + fileId;
 
 		try {
-			IOUtils.write(fileVO.getFileData(), new FileOutputStream(filePath));
+			FileUtils.writeByteArrayToFile(new File(filePath), fileVO.getFileData());
 		}
 		catch (IOException e) {
 			LOGGER.error(e.getMessage(), e);
