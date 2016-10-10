@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.hanbit.tutor.core.dao.MemberDAO;
 import com.hanbit.tutor.core.vo.MemberVO;
@@ -23,6 +24,7 @@ public class MemberService {
 	@Autowired
 	private SecurityService securityService;
 
+	@Transactional
 	public String joinMember(MemberVO member) {
 		int countMember = memberDAO.countMember(member.getEmail());
 
@@ -41,6 +43,7 @@ public class MemberService {
 		return member.getName();
 	}
 
+	@Transactional
 	public boolean modifyMember(MemberVO member) {
 		String passwordFromDB = memberDAO.selectPassword(member.getMemberId());
 		String passwordCurrent = member.getCurrentPassword();
