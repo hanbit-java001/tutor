@@ -5,9 +5,9 @@
 
 	<insert id="insertSchedule" parameterType="ScheduleVO">
 		INSERT INTO SCHEDULE
-			(SCHEDULE_ID, TITLE, MEMO, START_DT, END_DT)
+			(SCHEDULE_ID, TITLE, MEMO, START_DT, END_DT, MEMBER_ID)
 		VALUES
-			(#{scheduleId}, #{title}, #{memo}, #{startDt}, #{endDt})
+			(#{scheduleId}, #{title}, #{memo}, #{startDt}, #{endDt}, #{memberId})
 	</insert>
 
 	<update id="updateSchedule" parameterType="ScheduleVO">
@@ -15,10 +15,14 @@
 			TITLE = #{title}, MEMO = #{memo},
 			START_DT = #{startDt}, END_DT = #{endDt}
 		WHERE SCHEDULE_ID = #{scheduleId}
+		  AND MEMBER_ID = #{memberId}
 	</update>
 
-	<delete id="deleteSchedule" parameterType="string">
-		DELETE FROM SCHEDULE WHERE SCHEDULE_ID = #{scheduleId}
+	<delete id="deleteSchedule" parameterType="map">
+		DELETE
+		  FROM SCHEDULE
+		 WHERE SCHEDULE_ID = #{scheduleId}
+		   AND MEMBER_ID = #{memberId}
 	</delete>
 
 	<select id="selectSchedules" parameterType="map" resultType="ScheduleVO">
@@ -26,14 +30,16 @@
 		SELECT SCHEDULE_ID, TITLE, START_DT, END_DT
 		FROM SCHEDULE
 		WHERE START_DT <= #{endDt} AND END_DT >= #{startDt}
+		  AND MEMBER_ID = #{memberId}
 		ORDER BY START_DT
 	]]>
 	</select>
 
-	<select id="selectSchedule" parameterType="string" resultType="ScheduleVO">
+	<select id="selectSchedule" parameterType="map" resultType="ScheduleVO">
 		SELECT SCHEDULE_ID, TITLE, MEMO, START_DT, END_DT
 		FROM SCHEDULE
 		WHERE SCHEDULE_ID = #{scheduleId}
+		  AND MEMBER_ID = #{memberId}
 	</select>
 
 	<select id="countSchedule" parameterType="map" resultType="int">
@@ -41,6 +47,7 @@
 		SELECT COUNT(SCHEDULE_ID)
 		FROM SCHEDULE
 		WHERE START_DT <= #{endDt} AND END_DT >= #{startDt}
+		  AND MEMBER_ID = #{memberId}
 	]]>
 	</select>
 

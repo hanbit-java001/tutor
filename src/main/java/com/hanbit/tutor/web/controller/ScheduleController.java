@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hanbit.tutor.core.service.SchedulerService;
+import com.hanbit.tutor.core.session.LoginRequired;
 import com.hanbit.tutor.core.vo.ScheduleVO;
 
 @Controller
@@ -26,12 +27,14 @@ public class ScheduleController {
 	@Autowired
 	private SchedulerService schedulerService;
 
+	@LoginRequired
 	@RequestMapping("/schedule/list")
 	public String list() {
 
 		return "schedule/list";
 	}
 
+	@LoginRequired
 	@RequestMapping("/api/schedule/list")
 	@ResponseBody
 	public List<ScheduleVO> listSchedules(@RequestParam("startDt") String startDt,
@@ -42,6 +45,7 @@ public class ScheduleController {
 		return result;
 	}
 
+	@LoginRequired
 	@RequestMapping("/api/schedule/add")
 	@ResponseBody
 	public ScheduleVO addSchedule(@RequestBody ScheduleVO schedule) {
@@ -58,6 +62,7 @@ public class ScheduleController {
 		return schedule;
 	}
 
+	@LoginRequired
 	@RequestMapping("/api/schedule/countSchedule")
 	@ResponseBody
 	public Map countSchedule(@RequestParam("startDt") String startDt,
@@ -72,6 +77,7 @@ public class ScheduleController {
 		return result;
 	}
 
+	@LoginRequired
 	@RequestMapping(value="/api/schedule/{scheduleId}", method=RequestMethod.DELETE)
 	@ResponseBody
 	public Map removeSchedule(@PathVariable("scheduleId") String scheduleId) {
@@ -85,6 +91,7 @@ public class ScheduleController {
 		return result;
 	}
 
+	@LoginRequired
 	@RequestMapping(value="/api/schedule/{scheduleId}", method=RequestMethod.GET)
 	@ResponseBody
 	public ScheduleVO getSchedule(@PathVariable("scheduleId") String scheduleId) {
@@ -92,6 +99,7 @@ public class ScheduleController {
 		return schedulerService.getSchedule(scheduleId);
 	}
 
+	@LoginRequired
 	@RequestMapping("/api/schedule/modify")
 	@ResponseBody
 	public ScheduleVO modifySchedule(@RequestBody ScheduleVO schedule) {

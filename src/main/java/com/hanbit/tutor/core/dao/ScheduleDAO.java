@@ -21,8 +21,6 @@ public class ScheduleDAO {
 	private SqlSession sqlSession;
 
 	public int insertSchedule(ScheduleVO schedule) {
-		LOGGER.debug("인서트 스케줄");
-
 		int result = sqlSession.insert("schedule.insertSchedule", schedule);
 
 		return result;
@@ -34,32 +32,42 @@ public class ScheduleDAO {
 		return result;
 	}
 
-	public int deleteSchedule(String scheduleId) {
-		int result = sqlSession.delete("schedule.deleteSchedule", scheduleId);
+	public int deleteSchedule(String scheduleId, int memberId) {
+		Map params = new HashMap();
+		params.put("scheduleId", scheduleId);
+		params.put("memberId", memberId);
+
+		int result = sqlSession.delete("schedule.deleteSchedule", params);
 
 		return result;
 	}
 
-	public List<ScheduleVO> selectSchedules(String startDt, String endDt) {
+	public List<ScheduleVO> selectSchedules(String startDt, String endDt, int memberId) {
 		Map params = new HashMap();
 		params.put("startDt", startDt);
 		params.put("endDt", endDt);
+		params.put("memberId", memberId);
 
 		List<ScheduleVO> result = sqlSession.selectList("schedule.selectSchedules", params);
 
 		return result;
 	}
 
-	public ScheduleVO selectSchedule(String scheduleId) {
-		ScheduleVO schedule = sqlSession.selectOne("schedule.selectSchedule", scheduleId);
+	public ScheduleVO selectSchedule(String scheduleId, int memberId) {
+		Map params = new HashMap();
+		params.put("scheduleId", scheduleId);
+		params.put("memberId", memberId);
+
+		ScheduleVO schedule = sqlSession.selectOne("schedule.selectSchedule", params);
 
 		return schedule;
 	}
 
-	public int countSchedule(String startDt, String endDt) {
+	public int countSchedule(String startDt, String endDt, int memberId) {
 		Map params = new HashMap();
 		params.put("startDt", startDt);
 		params.put("endDt", endDt);
+		params.put("memberId", memberId);
 
 		int result = sqlSession.selectOne("schedule.countSchedule", params);
 

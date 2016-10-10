@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="order">
+
+	<insert id="insertOrder" parameterType="OrderVO">
+		INSERT INTO TBL_ORDER
+			(order_id, member_id, order_price)
+		VALUES
+			(#{orderId}, #{memberId}, #{orderPrice})
+	</insert>
+
+	<insert id="insertOrderDetail" parameterType="OrderDetailVO">
+		INSERT INTO TBL_ORDER_DETAIL
+			(order_id, product_id, product_price, product_quantity)
+		VALUES
+			(#{orderId}, #{productId}, #{productPrice}, #{productQuantity})
+	</insert>
+
+</mapper>

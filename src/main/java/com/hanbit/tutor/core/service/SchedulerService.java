@@ -21,25 +21,35 @@ public class SchedulerService {
 	private ScheduleDAO scheduleDAO;
 
 	public int addSchedule(ScheduleVO schedule) {
-		LOGGER.debug("스케줄 추가");
+		int memberId = SessionHelpler.getSession().getMemberId();
+		schedule.setMemberId(memberId);
 
 		return scheduleDAO.insertSchedule(schedule);
 	}
 
 	public int modifySchedule(ScheduleVO schedule) {
+		int memberId = SessionHelpler.getSession().getMemberId();
+		schedule.setMemberId(memberId);
+
 		return scheduleDAO.updateSchedule(schedule);
 	}
 
 	public int removeSchedule(String scheduleId) {
-		return scheduleDAO.deleteSchedule(scheduleId);
+		int memberId = SessionHelpler.getSession().getMemberId();
+
+		return scheduleDAO.deleteSchedule(scheduleId, memberId);
 	}
 
 	public List<ScheduleVO> listSchedules(String startDt, String endDt) {
-		return scheduleDAO.selectSchedules(startDt, endDt);
+		int memberId = SessionHelpler.getSession().getMemberId();
+
+		return scheduleDAO.selectSchedules(startDt, endDt, memberId);
 	}
 
 	public ScheduleVO getSchedule(String scheduleId) {
-		return scheduleDAO.selectSchedule(scheduleId);
+		int memberId = SessionHelpler.getSession().getMemberId();
+
+		return scheduleDAO.selectSchedule(scheduleId, memberId);
 	}
 
 	public String generateId() {
@@ -53,7 +63,9 @@ public class SchedulerService {
 	}
 
 	public int countSchedule(String startDt, String endDt) {
-		return scheduleDAO.countSchedule(startDt, endDt);
+		int memberId = SessionHelpler.getSession().getMemberId();
+
+		return scheduleDAO.countSchedule(startDt, endDt, memberId);
 	}
 
 }
