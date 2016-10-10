@@ -17,4 +17,12 @@
 			(#{orderId}, #{productId}, #{productPrice}, #{productQuantity})
 	</insert>
 
+	<select id="selectOrder" parameterType="string" resultType="map">
+		SELECT o.order_id, member_id, order_price,
+			   product_id, product_price, product_quantity
+		  FROM TBL_ORDER o, TBL_ORDER_DETAIL d
+		 WHERE o.order_id = #{orderId}
+		   AND o.order_id = d.order_id
+	</select>
+
 </mapper>
