@@ -28,6 +28,10 @@ public class WelcomeController {
 		map.put("name", "Hanbit");
 		map.put("message", "Hello");
 
+		if (map != null) {
+			throw new RuntimeException("그냥 에러");
+		}
+
 		return map;
 	}
 

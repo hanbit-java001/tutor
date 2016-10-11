@@ -9,10 +9,12 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Component
 @Aspect
+@Order(2)
 public class SessionAspect {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SessionAspect.class);
@@ -32,10 +34,7 @@ public class SessionAspect {
 			return "login";
 		}
 
-		Map result = new HashMap();
-		result.put("errorMsg", "로그인이 필요합니다.");
-
-		return result;
+		throw new RuntimeException("로그인이 필요합니다.");
 	}
 
 }
