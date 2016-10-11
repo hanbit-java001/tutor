@@ -35,17 +35,16 @@ $(function() {
 			return;
 		}
 
-		$.ajax({
+		callAjax({
 			url: "/api/security/login",
 			method: "POST",
 			data: {
 				email: email,
 				password: password
+			},
+			success: function(result) {
+				processAfterLogin(result.name);
 			}
-		}).done(function(result) {
-			processAfterLogin(result.name);
-		}).fail(function() {
-			alert("로그인을 실패하였습니다.");
 		});
 	});
 
@@ -82,15 +81,16 @@ $(function() {
 		}
 	}
 
-	$.ajax({
+	callAjax({
 		url: "/api/security/isLoggedIn",
-		method: "GET"
-	}).done(function(result) {
-		if (result.name == "") {
-			showMenu(false);
-		}
-		else {
-			showMenu(true);
+		method: "GET",
+		success: function(result) {
+			if (result.name == "") {
+				showMenu(false);
+			}
+			else {
+				showMenu(true);
+			}
 		}
 	});
 });

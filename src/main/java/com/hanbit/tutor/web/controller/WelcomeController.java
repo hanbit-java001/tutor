@@ -29,7 +29,7 @@ public class WelcomeController {
 		map.put("message", "Hello");
 
 		if (map != null) {
-			throw new RuntimeException("그냥 에러");
+			throw new RuntimeException("데이터 요청 에러");
 		}
 
 		return map;

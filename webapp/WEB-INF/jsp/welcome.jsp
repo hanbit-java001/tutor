@@ -62,6 +62,7 @@
 
 <script src="/static/plugins/jquery/jquery-3.1.0.min.js"></script>
 <script src="/static/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="/static/js/common.js"></script>
 <script src="/static/js/main.js"></script>
 </body>
 </html>
