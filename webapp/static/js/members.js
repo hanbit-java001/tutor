@@ -22,11 +22,11 @@ $(function() {
 			data: {
 				page: pageNumber
 			}
-		}).done(function(members) {
+		}).done(function(pagingMembers) {
 			$(".member-container").empty();
 
-			for (var i=0;i<members.length;i++) {
-				var member = members[i];
+			for (var i=0;i<pagingMembers.members.length;i++) {
+				var member = pagingMembers.members[i];
 
 				var name = member.name;
 				var email = member.email;
@@ -39,19 +39,85 @@ $(function() {
 
 				addMember(name, email, profileUrl);
 			}
+
+			var totalCount = pagingMembers.totalCount;
+
+			drawPaging(totalCount);
 		});
 	}
 
-	$(".member-paging-number").on("click", function() {
-		var pageNumber = $(this).text();
+	function drawPaging(totalCount) {
+		firstPage = parseInt((currentPage - 1) / pagingRange) * pagingRange + 1;
+		lastPage = firstPage + pagingRange - 1;
+		totalPages = parseInt(totalCount / itemsPerPage)
+			+ (totalCount % itemsPerPage > 0 ? 1 : 0);
 
-		currentPage = Number(pageNumber);
+		$(".member-paging").empty();
 
-		getMembers(pageNumber);
-	});
+		var pagingNumberHTML = "<div class='member-paging-number'>";
+		pagingNumberHTML += "이전";
+		pagingNumberHTML += "</div>";
 
+		$(".member-paging").append(pagingNumberHTML);
+
+		for (var i=firstPage;i<=lastPage;i++) {
+			if (i > totalPages) {
+				break;
+			}
+
+			pagingNumberHTML = "<div class='member-paging-number";
+
+			if (i == currentPage) {
+				pagingNumberHTML += " current-page";
+			}
+
+			pagingNumberHTML += "'>";
+			pagingNumberHTML += i;
+			pagingNumberHTML += "</div>";
+
+			$(".member-paging").append(pagingNumberHTML);
+		}
+
+		pagingNumberHTML = "<div class='member-paging-number'>";
+		pagingNumberHTML += "다음";
+		pagingNumberHTML += "</div>";
+
+		$(".member-paging").append(pagingNumberHTML);
+
+		$(".member-paging-number").on("click", function() {
+			var pageText = $(this).text();
+			var pageNumber = 0;
+
+			if (pageText == "이전") {
+				pageNumber = firstPage - 1;
+
+				if (pageNumber < 1) {
+					return;
+				}
+			}
+			else if (pageText == "다음") {
+				pageNumber = lastPage + 1;
+
+				if (pageNumber > totalPages) {
+					return;
+				}
+			}
+			else {
+				pageNumber = Number(pageText);
+			}
+
+			currentPage = pageNumber;
+
+			getMembers(pageNumber);
+		});
+	}
+
+	var itemsPerPage = 3;
 	var pagingRange = 5;
 	var currentPage = 1;
+	var firstPage;
+	var lastPage;
+	var totalPages;
 
 	getMembers(currentPage);
 });

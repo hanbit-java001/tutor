@@ -1,6 +1,5 @@
 package com.hanbit.tutor.web.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -96,10 +95,16 @@ public class MemberController {
 
 	@RequestMapping("/api/member/list")
 	@ResponseBody
-	public List<MemberVO> listMembers(@RequestParam("page") int page) {
-		List<MemberVO> members = memberService.getMembers(page);
+	public Map<String, Object> listMembers(@RequestParam("page") int page) {
+		Map<String, Object> pagingMembers = new HashMap<>();
 
-		return members;
+		List<MemberVO> members = memberService.getMembers(page);
+		int totalCount = memberService.getTotalMembers();
+
+		pagingMembers.put("totalCount", totalCount);
+		pagingMembers.put("members", members);
+
+		return pagingMembers;
 	}
 
 }

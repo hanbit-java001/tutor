@@ -65,4 +65,8 @@ public class MemberDAO {
 		return members;
 	}
 
+	public int countMembers() {
+		return sqlSession.selectOne("member.countMembers");
+	}
+
 }

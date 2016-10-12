@@ -68,9 +68,14 @@
 				SELECT ROWNUM rn, MEMBER_NAME name, MEMBER_EMAIL email,
 					   MEMBER_PROFILE profile_file_id
 				  FROM MEMBER) a
-			 WHERE rn <= 6 * #{page}) a
-		 WHERE rn > 6 * (#{page} - 1)
+			 WHERE rn <= 3 * #{page}) a
+		 WHERE rn > 3 * (#{page} - 1)
   	]]>
+  	</select>
+
+  	<select id="countMembers" resultType="int">
+  		SELECT COUNT(MEMBER_ID)
+  		  FROM MEMBER
   	</select>
 
 </mapper>

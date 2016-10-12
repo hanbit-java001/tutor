@@ -76,4 +76,8 @@ public class MemberService {
 		return members;
 	}
 
+	public int getTotalMembers() {
+		return memberDAO.countMembers();
+	}
+
 }

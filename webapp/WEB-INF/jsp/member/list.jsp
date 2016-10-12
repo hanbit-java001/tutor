@@ -11,11 +11,6 @@
 	<div class="member-container">
 	</div>
 	<div class="member-paging">
-		<div class="member-paging-number">1</div>
-		<div class="member-paging-number">2</div>
-		<div class="member-paging-number">3</div>
-		<div class="member-paging-number">4</div>
-		<div class="member-paging-number">5</div>
 	</div>
 <script src="/static/plugins/jquery/jquery-3.1.0.min.js"></script>
 <script src="/static/js/members.js"></script>
