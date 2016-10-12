@@ -59,4 +59,18 @@
 		  FROM DUAL
 	</select>
 
+	<select id="selectMembers" parameterType="int" resultType="MemberVO">
+	<![CDATA[
+		SELECT 	a.rn, a.name, a.email, a.profile_file_id
+		  FROM (
+			SELECT a.rn, a.name, a.email, a.profile_file_id
+			  FROM (
+				SELECT ROWNUM rn, MEMBER_NAME name, MEMBER_EMAIL email,
+					   MEMBER_PROFILE profile_file_id
+				  FROM MEMBER) a
+			 WHERE rn <= 6 * #{page}) a
+		 WHERE rn > 6 * (#{page} - 1)
+  	]]>
+  	</select>
+
 </mapper>

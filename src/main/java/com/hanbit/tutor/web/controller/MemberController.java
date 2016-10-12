@@ -1,7 +1,9 @@
 package com.hanbit.tutor.web.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -83,6 +86,20 @@ public class MemberController {
 		result.put("name", name);
 
 		return result;
+	}
+
+	@RequestMapping("/members")
+	public String listMember() {
+
+		return "member/list";
+	}
+
+	@RequestMapping("/api/member/list")
+	@ResponseBody
+	public List<MemberVO> listMembers(@RequestParam("page") int page) {
+		List<MemberVO> members = memberService.getMembers(page);
+
+		return members;
 	}
 
 }
