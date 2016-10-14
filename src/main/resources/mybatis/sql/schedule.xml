@@ -36,6 +36,25 @@
 	]]>
 	</select>
 
+	<select id="selectSchedulesForShare" parameterType="map" resultType="ScheduleVO">
+	<![CDATA[
+		SELECT sc.SCHEDULE_ID, sc.TITLE, sc.START_DT, sc.END_DT, sc.IMPORTANT_YN
+		  FROM SCHEDULE sc, SHARE sh
+		 WHERE sc.SCHEDULE_ID = sh.SCHEDULE_ID
+		   AND sc.START_DT <= #{endDt} AND sc.END_DT >= #{startDt}
+		   AND (
+		         (sh.GROUP_YN = 'N' AND sh.SHARE_ID = #{memberId})
+		         OR
+		         (sh.GROUP_YN = 'Y' AND sh.SHARE_ID IN (
+		       	   SELECT GROUP_ID
+		       	     FROM GROUP_MEMBER
+		       	    WHERE MEMBER_ID = #{memberId})
+		       	 )
+		       )
+		 ORDER BY START_DT
+	]]>
+	</select>
+
 	<select id="selectSchedule" parameterType="map" resultType="ScheduleVO">
 		SELECT SCHEDULE_ID, TITLE, MEMO, START_DT, END_DT, IMPORTANT_YN
 		  FROM SCHEDULE
