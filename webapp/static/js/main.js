@@ -20,7 +20,23 @@ $(function() {
 		location.href = "/member/join";
 	});
 
+	$(".login-dialog input").on("keyup", function(event) {
+		if (event.keyCode != 13) {
+			return;
+		}
+
+		login();
+	});
+
 	$(".btnLogin").on("click", function() {
+		login();
+	});
+
+	$(".btnLoginCancel").on("click", function() {
+		hideLoginDialog();
+	});
+
+	function login() {
 		var email = $("#txtEmail").val();
 		var password = $("#txtPassword").val();
 
@@ -46,11 +62,7 @@ $(function() {
 				processAfterLogin(result.name);
 			}
 		});
-	});
-
-	$(".btnLoginCancel").on("click", function() {
-		hideLoginDialog();
-	});
+	}
 
 	function showLoginDialog() {
 		$(".login-dialog").fadeIn();
