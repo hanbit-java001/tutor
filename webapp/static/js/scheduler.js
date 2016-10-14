@@ -58,6 +58,12 @@ $(document).ready(function() {
             		changeView("detail", {schedule: schedule});
             	});
         	}
+        },
+
+        eventRender: function(event, element) {
+        	if (event.importantYn == "Y") {
+        		element.css("background-color", "red");
+        	}
         }
     });
 
@@ -284,6 +290,7 @@ $(document).ready(function() {
 		var endDt = moment(schedule.endDt, dbFormat);
 
 		$("#txtScheduleId").val(schedule.scheduleId);
+		$("#chkImportant").prop("checked", schedule.importantYn == "Y");
 		$("#txtTitle").val(schedule.title);
 		$("#txtStartDt").data("DateTimePicker").date(startDt);
 		$("#txtEndDt").data("DateTimePicker").date(endDt);
@@ -342,6 +349,7 @@ $(document).ready(function() {
 		var startDt = $("#txtStartDt").val();
 		var endDt = $("#txtEndDt").val();
 		var memo = $("#txtMemo").val();
+		var importantYn = $("#chkImportant").is(":checked") ? "Y" : "N";
 
 		if (title.trim() == "") {
 			alert("제목을 입력하세요.");
@@ -374,7 +382,8 @@ $(document).ready(function() {
 			title: title,
 			startDt: startDt.format(dbFormat),
 			endDt: endDt.format(dbFormat),
-			memo: memo
+			memo: memo,
+			importantYn: importantYn
 		};
 
     	var url;
@@ -412,6 +421,7 @@ $(document).ready(function() {
 		  event.title = originEvent.title;
 		  event.start = moment(originEvent.startDt, dbFormat).format("YYYY-MM-DDTHH:mm");
 		  event.end = moment(originEvent.endDt, dbFormat).format("YYYY-MM-DDTHH:mm");
+		  event.importantYn = originEvent.importantYn;
 
 		  if (applyType == "add") {
 			  $("#calendar").fullCalendar("renderEvent", event, true);

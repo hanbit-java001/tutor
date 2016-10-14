@@ -65,6 +65,14 @@
     			<input type="text" class="form-control" id="txtTitle" placeholder="제목">
 			</div>
 			<div class="form-group">
+    			<label for="chkImportant">중요일정</label>
+    			<div class="checkbox">
+					<label>
+						<input type="checkbox" id="chkImportant"> 체크하세요
+					</label>
+				</div>
+			</div>
+			<div class="form-group">
     			<label for="txtStartDt">시작</label>
     			<input type="text" class="form-control" id="txtStartDt" placeholder="시작">
 			</div>

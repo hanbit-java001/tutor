@@ -7,6 +7,7 @@ public class ScheduleVO {
 	private String memo;
 	private String startDt;
 	private String endDt;
+	private String importantYn;
 	private int memberId;
 
 	public String getScheduleId() {
@@ -44,6 +45,12 @@ public class ScheduleVO {
 	}
 	public void setMemberId(int memberId) {
 		this.memberId = memberId;
+	}
+	public String getImportantYn() {
+		return importantYn;
+	}
+	public void setImportantYn(String importantYn) {
+		this.importantYn = importantYn;
 	}
 
 }
