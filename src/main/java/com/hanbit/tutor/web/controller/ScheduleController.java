@@ -82,11 +82,15 @@ public class ScheduleController {
 	@ResponseBody
 	public Map removeSchedule(@PathVariable("scheduleId") String scheduleId) {
 
-		int countRemove = schedulerService.removeSchedule(scheduleId);
+		int countRemoved = schedulerService.removeSchedule(scheduleId);
+
+		if (countRemoved == 0) {
+			throw new RuntimeException("삭제권한이 없습니다.");
+		}
 
 		Map result = new HashMap();
 
-		result.put("countRemove", countRemove);
+		result.put("countRemoved", countRemoved);
 
 		return result;
 	}
@@ -107,7 +111,7 @@ public class ScheduleController {
 		int countModified = schedulerService.modifySchedule(schedule);
 
 		if (countModified == 0) {
-			throw new RuntimeException();
+			throw new RuntimeException("수정권한이 없습니다.");
 		}
 
 		return schedule;

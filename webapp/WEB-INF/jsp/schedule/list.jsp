@@ -121,6 +121,7 @@
 <script src="/static/plugins/fullcalendar/fullcalendar.min.js"></script>
 <script src="/static/plugins/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 <script src="/static/plugins/fullcalendar/locale/ko.js"></script>
+<script src="/static/js/common.js"></script>
 <script src="/static/js/scheduler.js"></script>
 </body>
 </html>

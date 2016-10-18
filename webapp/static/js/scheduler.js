@@ -68,16 +68,17 @@ $(document).ready(function() {
     });
 
     function removeSchedule(scheduleId) {
-		$.ajax({
+		callAjax({
 			url: "/api/schedule/" + scheduleId,
-			method: "DELETE"
-		}).done(function(result) {
-			if (result.countRemove > 0) {
-				if (currentView == "detail") {
-					backwardView();
-				}
+			method: "DELETE",
+			success: function(result) {
+				if (result.countRemoved > 0) {
+					if (currentView == "detail") {
+						backwardView();
+					}
 
-				$("#calendar").fullCalendar("removeEvents", scheduleId);
+					$("#calendar").fullCalendar("removeEvents", scheduleId);
+				}
 			}
 		});
     }
@@ -128,11 +129,12 @@ $(document).ready(function() {
     });
 
     function getSchedule(scheduleId, callback) {
-		$.ajax({
+		callAjax({
 			url: "/api/schedule/" + scheduleId,
-			method: "GET"
-		}).done(function(result) {
-			callback(result);
+			method: "GET",
+			success: function(result) {
+				callback(result);
+			}
 		});
     }
 
@@ -143,19 +145,20 @@ $(document).ready(function() {
     });
 
     function handleDayClick(date) {
-    	$.ajax({
+    	callAjax({
     		url: "/api/schedule/countSchedule",
     		method: "GET",
     		data: {
     			startDt: date.startOf("day").format(dbFormat),
     			endDt: date.endOf("day").format(dbFormat)
-    		}
-    	}).done(function(result) {
-    		if (result.eventCount > 0) {
-    			changeView("listDay", {date: date});
-    		}
-    		else {
-    			changeView("add", {date: date});
+    		},
+    		success: function(result) {
+	    		if (result.eventCount > 0) {
+	    			changeView("listDay", {date: date});
+	    		}
+	    		else {
+	    			changeView("add", {date: date});
+	    		}
     		}
     	});
     }
@@ -397,20 +400,19 @@ $(document).ready(function() {
     		url = "/api/schedule/modify";
     	}
 
-		$.ajax({
+		callAjax({
 			url: url,
 			method: "POST",
 			contentType: "application/json; charset=utf-8",
 			dataType: "json",
-			data: JSON.stringify(schedule)
-		}).done(function(result) {
-			var viewName = currentView;
+			data: JSON.stringify(schedule),
+			success: function(result) {
+				var viewName = currentView;
 
-			backwardView(result);
+				backwardView(result);
 
-			applyScheduleToCalendar(result, viewName);
-		}).fail(function() {
-			alert("사용자가 폭주하여 잠시 후 사용해주세요.");
+				applyScheduleToCalendar(result, viewName);
+			}
 		});
     }
 

@@ -26,6 +26,18 @@ public class ScheduleDAO {
 		return result;
 	}
 
+	public int insertShares(String scheduleId, int shareId,
+			boolean groupYn, boolean ownerYn) {
+
+		Map params = new HashMap();
+		params.put("scheduleId", scheduleId);
+		params.put("shareId", shareId);
+		params.put("groupYn", groupYn ? "Y" : "N");
+		params.put("ownerYn", ownerYn ? "Y" : "N");
+
+		return sqlSession.insert("schedule.insertShares", params);
+	}
+
 	public int updateSchedule(ScheduleVO schedule) {
 		int result = sqlSession.update("schedule.updateSchedule", schedule);
 
@@ -40,6 +52,10 @@ public class ScheduleDAO {
 		int result = sqlSession.delete("schedule.deleteSchedule", params);
 
 		return result;
+	}
+
+	public int deleteShares(String scheduleId) {
+		return sqlSession.delete("schedule.deleteShares", scheduleId);
 	}
 
 	public List<ScheduleVO> selectSchedules(String startDt, String endDt, int memberId) {

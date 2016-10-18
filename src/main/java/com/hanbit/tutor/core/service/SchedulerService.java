@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.hanbit.tutor.core.dao.ScheduleDAO;
 import com.hanbit.tutor.core.session.SessionHelpler;
@@ -20,11 +21,16 @@ public class SchedulerService {
 	@Autowired
 	private ScheduleDAO scheduleDAO;
 
+	@Transactional
 	public int addSchedule(ScheduleVO schedule) {
 		int memberId = SessionHelpler.getSession().getMemberId();
 		schedule.setMemberId(memberId);
 
-		return scheduleDAO.insertSchedule(schedule);
+		int result = scheduleDAO.insertSchedule(schedule);
+		scheduleDAO.insertShares(schedule.getScheduleId(), memberId,
+				false, true);
+
+		return result;
 	}
 
 	public int modifySchedule(ScheduleVO schedule) {
@@ -34,10 +40,17 @@ public class SchedulerService {
 		return scheduleDAO.updateSchedule(schedule);
 	}
 
+	@Transactional
 	public int removeSchedule(String scheduleId) {
 		int memberId = SessionHelpler.getSession().getMemberId();
 
-		return scheduleDAO.deleteSchedule(scheduleId, memberId);
+		int result = scheduleDAO.deleteSchedule(scheduleId, memberId);
+
+		if (result > 0) {
+			scheduleDAO.deleteShares(scheduleId);
+		}
+
+		return result;
 	}
 
 	public List<ScheduleVO> listSchedules(String startDt, String endDt) {

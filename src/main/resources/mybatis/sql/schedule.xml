@@ -5,9 +5,16 @@
 
 	<insert id="insertSchedule" parameterType="ScheduleVO">
 		INSERT INTO SCHEDULE
-			(SCHEDULE_ID, TITLE, MEMO, START_DT, END_DT, IMPORTANT_YN, MEMBER_ID)
+			(SCHEDULE_ID, TITLE, MEMO, START_DT, END_DT, IMPORTANT_YN)
 		VALUES
-			(#{scheduleId}, #{title}, #{memo}, #{startDt}, #{endDt}, #{importantYn}, #{memberId})
+			(#{scheduleId}, #{title}, #{memo}, #{startDt}, #{endDt}, #{importantYn})
+	</insert>
+
+	<insert id="insertShares" parameterType="map">
+		INSERT INTO SHARES
+			(SCHEDULE_ID, SHARE_ID, GROUP_YN, OWNER_YN)
+		VALUES
+			(#{scheduleId}, #{shareId}, #{groupYn}, #{ownerYn})
 	</insert>
 
 	<update id="updateSchedule" parameterType="ScheduleVO">
@@ -15,31 +22,39 @@
 			TITLE = #{title}, MEMO = #{memo},
 			START_DT = #{startDt}, END_DT = #{endDt},
 			IMPORTANT_YN = #{importantYn}
-		WHERE SCHEDULE_ID = #{scheduleId}
-		  AND MEMBER_ID = #{memberId}
+		WHERE SCHEDULE_ID IN (
+		 	SELECT sc.SCHEDULE_ID
+			  FROM SCHEDULE sc, SHARES sh
+			 WHERE sc.SCHEDULE_ID = #{scheduleId}
+		   	   AND sc.SCHEDULE_ID = sh.SCHEDULE_ID
+		       AND sh.GROUP_YN = 'N'
+		       AND sh.SHARE_ID = #{memberId}
+		       AND sh.OWNER_YN = 'Y')
 	</update>
 
 	<delete id="deleteSchedule" parameterType="map">
 		DELETE
 		  FROM SCHEDULE
+		 WHERE SCHEDULE_ID IN (
+		 	SELECT sc.SCHEDULE_ID
+			  FROM SCHEDULE sc, SHARES sh
+			 WHERE sc.SCHEDULE_ID = #{scheduleId}
+		   	   AND sc.SCHEDULE_ID = sh.SCHEDULE_ID
+		       AND sh.GROUP_YN = 'N'
+		       AND sh.SHARE_ID = #{memberId}
+		       AND sh.OWNER_YN = 'Y')
+	</delete>
+
+	<delete id="deleteShares" parameterType="string">
+		DELETE
+		  FROM SHARES
 		 WHERE SCHEDULE_ID = #{scheduleId}
-		   AND MEMBER_ID = #{memberId}
 	</delete>
 
 	<select id="selectSchedules" parameterType="map" resultType="ScheduleVO">
 	<![CDATA[
-		SELECT SCHEDULE_ID, TITLE, START_DT, END_DT, IMPORTANT_YN
-		  FROM SCHEDULE
-		 WHERE START_DT <= #{endDt} AND END_DT >= #{startDt}
-		   AND MEMBER_ID = #{memberId}
-		 ORDER BY START_DT
-	]]>
-	</select>
-
-	<select id="selectSchedulesForShare" parameterType="map" resultType="ScheduleVO">
-	<![CDATA[
 		SELECT sc.SCHEDULE_ID, sc.TITLE, sc.START_DT, sc.END_DT, sc.IMPORTANT_YN
-		  FROM SCHEDULE sc, SHARE sh
+		  FROM SCHEDULE sc, SHARES sh
 		 WHERE sc.SCHEDULE_ID = sh.SCHEDULE_ID
 		   AND sc.START_DT <= #{endDt} AND sc.END_DT >= #{startDt}
 		   AND (
@@ -56,18 +71,35 @@
 	</select>
 
 	<select id="selectSchedule" parameterType="map" resultType="ScheduleVO">
-		SELECT SCHEDULE_ID, TITLE, MEMO, START_DT, END_DT, IMPORTANT_YN
-		  FROM SCHEDULE
-		 WHERE SCHEDULE_ID = #{scheduleId}
-		   AND MEMBER_ID = #{memberId}
+		SELECT sc.SCHEDULE_ID, TITLE, MEMO, START_DT, END_DT, IMPORTANT_YN
+		  FROM SCHEDULE sc, SHARES sh
+		 WHERE sc.SCHEDULE_ID = #{scheduleId}
+		   AND sc.SCHEDULE_ID = sh.SCHEDULE_ID
+		   AND (
+		         (sh.GROUP_YN = 'N' AND sh.SHARE_ID = #{memberId})
+		         OR
+		         (sh.GROUP_YN = 'Y' AND sh.SHARE_ID IN (
+		       	   SELECT GROUP_ID
+		       	     FROM GROUP_MEMBER
+		       	    WHERE MEMBER_ID = #{memberId})
+		       	 )
+		       )
 	</select>
 
 	<select id="countSchedule" parameterType="map" resultType="int">
 	<![CDATA[
-		SELECT COUNT(SCHEDULE_ID)
-		  FROM SCHEDULE
+		SELECT COUNT(sc.SCHEDULE_ID)
+		  FROM SCHEDULE sc, SHARES sh
 		 WHERE START_DT <= #{endDt} AND END_DT >= #{startDt}
-		   AND MEMBER_ID = #{memberId}
+		   AND (
+		         (sh.GROUP_YN = 'N' AND sh.SHARE_ID = #{memberId})
+		         OR
+		         (sh.GROUP_YN = 'Y' AND sh.SHARE_ID IN (
+		       	   SELECT GROUP_ID
+		       	     FROM GROUP_MEMBER
+		       	    WHERE MEMBER_ID = #{memberId})
+		       	 )
+		       )
 	]]>
 	</select>
 
